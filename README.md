@@ -1,7 +1,10 @@
 # Orion — site institucional
 
-Site institucional one-page da Orion, com foco B2B em desenvolvimento,
+Site institucional multipágina da Orion, com foco B2B em desenvolvimento,
 formulação, fabricação e envase de soluções para o mercado pet.
+
+Stack: **React + Vite + React Router + TypeScript**, preparada para hospedagem
+na Vercel como SPA.
 
 ## Desenvolvimento
 
@@ -10,18 +13,59 @@ npm install
 npm run dev
 ```
 
+O Vite inicia localmente em `http://localhost:3000`.
+
+## Build
+
+```bash
+npm run build
+```
+
+O resultado é gerado em `dist`.
+
+## Preview
+
+```bash
+npm run preview
+```
+
+O preview de produção inicia em `http://localhost:4173`.
+
 ## Validação
 
 ```bash
 npm run lint
-npm run build
+npm test
 npm run build:og
-node --test tests/rendered-html.test.mjs
 ```
 
-O projeto usa React, TypeScript, vinext e Vite. A home está organizada em
-componentes por responsabilidade, com dados institucionais centralizados em
-`app/data/site.ts`.
+As páginas ficam em `src/pages`, os componentes em `src/components`, os dados
+institucionais em `src/data/site.ts` e os estilos globais em
+`src/styles/globals.css`.
+
+## SEO e domínio
+
+Títulos, descriptions, canonical e Open Graph são atualizados por rota. Em
+produção na Vercel, a aplicação usa automaticamente
+`VITE_VERCEL_PROJECT_PRODUCTION_URL`. Um domínio oficial também pode ser
+definido com `VITE_SITE_URL=https://dominio-oficial`.
+
+Sem um domínio confirmado, `public/sitemap.xml` e `public/robots.txt` mantêm
+caminhos relativos para não inventar uma origem. Durante o build da Vercel,
+esses arquivos são finalizados em `dist` com a URL de produção do projeto.
+
+## Deploy
+
+Configuração da Vercel:
+
+- Framework Preset: `Vite`
+- Build Command: `npm run build`
+- Output Directory: `dist`
+- Install Command: `npm install` (padrão)
+- Root Directory: `./`
+
+O rewrite definido em `vercel.json` encaminha rotas sem arquivo para
+`index.html`, permitindo refresh direto em qualquer página do React Router.
 
 As marcas apresentadas nesta versão são AtualPet, Quality Pet, Mais Dog e Dez
 Pet. As cinco linhas da AtualPet foram conferidas no catálogo institucional da
