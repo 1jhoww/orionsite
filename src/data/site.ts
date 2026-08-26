@@ -89,12 +89,12 @@ export const brands: Brand[] = [
     surface: "blue",
   },
   {
-    name: "Mais Dog",
+    name: "+Dog",
     slug: "mais-dog",
     logo: "/brand/mais-dog-logo.png",
     width: 439,
     height: 293,
-    alt: "Logo da Mais Dog",
+    alt: "Logo oficial da +Dog",
     description: "Um universo de marca construído para cuidado e proximidade.",
     surface: "paper",
   },
@@ -113,30 +113,30 @@ export const brands: Brand[] = [
 export const technologyMedia: TechnologyMedia[] = [
   {
     placement: "main",
-    image: "/media/clean-filling.webp",
-    imageSmall: "/media/clean-filling-720.webp",
+    image: "/media/og-editorial.webp",
+    imageSmall: "/media/og-editorial.webp",
     width: 1200,
-    height: 2132,
-    alt: "Equipamento de dosagem em uma linha de produção limpa",
-    caption: "Fabricação e envase",
+    height: 630,
+    alt: "Linha de envase com frascos em uma estrutura industrial",
+    caption: "Estrutura de envase",
   },
   {
     placement: "detail",
-    image: "/media/quality-control.webp",
-    imageSmall: "/media/quality-control-600.webp",
-    width: 1200,
-    height: 800,
-    alt: "Avaliação técnica realizada em ambiente de laboratório",
-    caption: "Análise e controle",
+    image: "/media/hero-formula.webp",
+    imageSmall: "/media/hero-formula.webp",
+    width: 1600,
+    height: 2400,
+    alt: "Gota de formulação sendo dosada em um frasco de laboratório",
+    caption: "Precisão de formulação",
   },
   {
     placement: "detail",
-    image: "/media/formulation.webp",
-    imageSmall: "/media/formulation-600.webp",
-    width: 1200,
-    height: 800,
-    alt: "Textura cosmética avaliada durante a formulação",
-    caption: "Formulação e sensorial",
+    image: "/media/og-formulation.webp",
+    imageSmall: "/media/og-formulation.webp",
+    width: 1600,
+    height: 841,
+    alt: "Vidrarias e matérias-primas organizadas para desenvolvimento",
+    caption: "Desenvolvimento técnico",
   },
 ];
 
@@ -200,8 +200,8 @@ export const atualPetLines: AtualPetLine[] = [
     logoAlt: "Logo oficial da linha The Luxe",
     artwork: "/media/lines/the-luxe.webp",
     artworkSmall: "/media/lines/the-luxe-720.webp",
-    artworkAlt: "Composição publicitária da linha The Luxe Premium com produtos de tratamento e finalização",
-    description: "Tratamento intensivo com linguagem visual de alta performance.",
+    artworkAlt: "Composição publicitária da linha The Luxe com produtos de tratamento e finalização",
+    description: "Tratamento intensivo com identidade visual própria.",
     detail: "Máscaras · shampoos · condicionadores · perfumaria",
     tone: "#e95177",
   },
@@ -304,7 +304,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Como funciona o desenvolvimento de um projeto?",
     answer:
-      "O trabalho avança por alinhamento comercial, formulação e amostras, produção e envase e, por fim, entrega logística.",
+      "O trabalho avança por alinhamento comercial, desenvolvimento e amostras, apoio à organização documental e aos processos de regularização e registro, produção, envase e entrega. Identidade visual pode integrar o projeto como etapa complementar, conforme o escopo comercial.",
   },
   {
     question: "Quais tipos de solução fazem parte da atuação da Orion?",
@@ -319,7 +319,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Quais marcas fazem parte do portfólio apresentado?",
     answer:
-      "O portfólio institucional reúne AtualPet, Quality Pet, Mais Dog e Dez Pet. A página de portfólio apresenta a identidade confirmada de cada uma.",
+      "O ecossistema institucional reúne AtualPet, Quality Pet, +Dog e Dez Pet. A página de portfólio organiza os produtos reais disponíveis por categoria, sem estabelecer hierarquia de qualidade entre as marcas.",
   },
   {
     question: "Onde encontro o canal de contato comercial?",

@@ -4,10 +4,6 @@ const routes = [
   "/",
   "/sobre",
   "/portfolio",
-  "/portfolio/atual-pet",
-  "/portfolio/quality-pet",
-  "/portfolio/mais-dog",
-  "/portfolio/dez-pet",
   "/terceirizacao",
   "/faq",
 ];

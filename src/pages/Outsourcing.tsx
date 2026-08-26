@@ -1,20 +1,14 @@
 import { InternalHero } from "../components/InternalHero";
+import { OutsourcingTimeline } from "../components/OutsourcingTimeline";
 import { PageCta } from "../components/PageCta";
 import { Seo } from "../components/Seo";
-
-const stages = [
-  { title: "Alinhamento Comercial", text: "Categoria, posicionamento, público e objetivos definem a direção inicial do projeto." },
-  { title: "Formulação e Amostras", text: "A proposta se transforma em solução técnica, sensorial e visual para avaliação." },
-  { title: "Produção e Envase", text: "Fabricação e apresentação avançam em relação ao desenvolvimento aprovado." },
-  { title: "Entrega Logística", text: "O produto finalizado segue preparado para integrar o fluxo comercial do parceiro." },
-] as const;
 
 export default function OutsourcingPage() {
   return (
     <>
       <Seo
         title="Terceirização para o mercado pet | Orion"
-        description="Conheça o processo conectado da Orion: alinhamento comercial, formulação e amostras, produção e envase e entrega logística."
+        description="Do briefing à entrega: conheça as etapas técnicas e comerciais da terceirização Orion para desenvolvimento e produção de cosméticos pet."
         path="/terceirizacao"
         ogDescription="Da direção de marca ao produto final em uma operação conectada."
         imageAlt="Processo industrial Orion"
@@ -22,41 +16,32 @@ export default function OutsourcingPage() {
       <main id="conteudo" className="internal-page outsourcing-page">
       <InternalHero
         eyebrow="Terceirização"
-        title="Da ideia ao produto final."
-        description="A Orion conecta desenvolvimento técnico e execução industrial para materializar soluções com identidade própria."
-        image="/media/formulation.webp"
-        imageSmall="/media/formulation-600.webp"
-        imageAlt="Textura cosmética analisada durante o desenvolvimento"
+        title="Do briefing à produção, etapas coordenadas pela Orion."
+        description="O projeto avança por definições comerciais, desenvolvimento técnico, preparação documental e execução industrial até a entrega."
+        image="/media/hero-fragrance.webp"
+        imageSmall="/media/hero-fragrance-800.webp"
+        imageWidth={1600}
+        imageHeight={2400}
+        imageAlt="Medição de uma formulação durante o desenvolvimento olfativo"
       />
 
-      <section className="outsourcing-process" aria-labelledby="outsourcing-process-title">
-        <div className="container content-split outsourcing-process-intro">
-          <div>
-            <p className="eyebrow">Processo de parceria</p>
-            <h2 id="outsourcing-process-title">Um caminho claro, do briefing à entrega.</h2>
-          </div>
-          <p>Cada projeto avança por etapas conectadas, com alinhamento entre intenção de marca e execução industrial.</p>
-        </div>
-        <ol className="container outsourcing-process-list">
-          {stages.map((stage) => (
-            <li key={stage.title}>
-              <span aria-hidden="true" />
-              <h3>{stage.title}</h3>
-              <p>{stage.text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <OutsourcingTimeline />
 
       <section className="outsourcing-scope" aria-labelledby="outsourcing-scope-title">
         <div className="container outsourcing-scope-layout">
           <figure>
-            <img src="/media/clean-filling.webp" srcSet="/media/clean-filling-720.webp 720w, /media/clean-filling.webp 1200w" width="1200" height="2132" alt="Equipamento de dosagem em uma linha de produção limpa" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 46vw" />
+            <img src="/media/hero-perfume-lab.webp" width="2000" height="1333" alt="Frascos alinhados durante uma etapa de envase de perfumaria" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 46vw" />
           </figure>
           <div>
-            <p className="eyebrow">Operação integrada</p>
-            <h2 id="outsourcing-scope-title">Desenvolvimento, fabricação e apresentação em uma mesma direção.</h2>
-            <p>A atuação institucional reúne pesquisa, formulação, fabricação, envase e finalização para soluções de higiene, tratamento, cuidado especializado e perfumaria pet.</p>
+            <p className="eyebrow">Escopo coordenado</p>
+            <h2 id="outsourcing-scope-title">Produto, documentação e apresentação preparados em conjunto.</h2>
+            <p>A Orion oferece apoio na organização documental e nos processos necessários para regularização e registro do produto. Projetos de identidade visual e materiais gráficos podem ser incorporados conforme o escopo.</p>
+            <ul className="outsourcing-scope-points">
+              <li>Definição técnica e desenvolvimento de amostras</li>
+              <li>Organização documental vinculada ao projeto</li>
+              <li>Planejamento de fabricação, envase e acabamento</li>
+              <li>Preparação do produto finalizado para logística</li>
+            </ul>
           </div>
         </div>
       </section>

@@ -4,11 +4,11 @@ import { Reveal } from "./Reveal";
 const partnershipSteps = [
   {
     title: "Alinhamento Comercial",
-    description: "Categoria, posicionamento, público e objetivos definem a direção inicial do projeto.",
+    description: "Categoria, posicionamento, público e escopo definem a direção; identidade visual pode integrar o projeto como etapa complementar.",
   },
   {
-    title: "Formulação e Amostras",
-    description: "A proposta se transforma em solução técnica, sensorial e visual para avaliação.",
+    title: "Desenvolvimento e Documentação",
+    description: "Formulação e amostras avançam com apoio à organização documental e aos processos de regularização e registro.",
   },
   {
     title: "Produção e Envase",
@@ -33,7 +33,8 @@ export function PartnershipTimeline() {
         setIsActive(true);
         observer.disconnect();
       },
-      { rootMargin: "0px 0px -18% 0px", threshold: 0.16 },
+      // Start only once the sequence is genuinely in the reading area, so the build-up is watched.
+      { rootMargin: "0px 0px -24% 0px", threshold: 0.28 },
     );
     observer.observe(section);
     return () => observer.disconnect();
@@ -58,7 +59,8 @@ export function PartnershipTimeline() {
         {partnershipSteps.map((step, index) => (
           <li
             className="partnership-step"
-            style={{ "--timeline-delay": `${760 + index * 170}ms` } as React.CSSProperties}
+            // Each marker lands roughly when the drawing line reaches its position.
+            style={{ "--timeline-delay": `${300 + index * 420}ms` } as React.CSSProperties}
             key={step.title}
           >
             <span className="partnership-marker" aria-hidden="true" />

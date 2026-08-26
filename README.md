@@ -67,19 +67,24 @@ Configuração da Vercel:
 O rewrite definido em `vercel.json` encaminha rotas sem arquivo para
 `index.html`, permitindo refresh direto em qualquer página do React Router.
 
-As marcas apresentadas nesta versão são AtualPet, Quality Pet, Mais Dog e Dez
-Pet. As cinco linhas da AtualPet foram conferidas no catálogo institucional da
-própria marca. A identidade usa o azul `#0B6186`, extraído diretamente da logo
-raster oficial da Orion.
+O ecossistema institucional reúne AtualPet, Quality Pet, +Dog e Dez Pet.
+O portfólio público é organizado por categoria de produto e utiliza apenas os
+ativos reais disponíveis das cinco linhas AtualPet. A identidade usa o azul
+`#0B6186`, extraído diretamente da logo raster oficial da Orion.
 
 ## Estrutura da home
 
-- Hero industrial com posicionamento pet explícito e dois caminhos de conversão.
-- Quatro pilares institucionais em uma matriz editorial tipográfica.
+- Hero industrial B2B com posicionamento pet explícito e dois caminhos de conversão.
+- Faixa editorial de escala logo após a Hero, com o marco confirmado de mais de
+  500 SKUs desenvolvidos e capacidades qualitativas sem números inventados.
+- Seis capacidades com iconografia vetorial própria: desenvolvimento e formulação,
+  documentação e registro, produção, envase, identidade visual e entrega/logística.
 - Quatro grupos de soluções em um mosaico fotográfico assimétrico.
 - Método Orion interativo, organizado em Pesquisa, Desenvolvimento e Produção.
 - Jornada B2B em timeline animada e galeria de estrutura e tecnologia.
-- Grade de marcas produzidas e história de produto da AtualPet.
+- Capacidade Industrial Integrada aparece antes da introdução curta de Portfólio.
+- Portfólio completo organizado nas categorias Shampoos, Condicionadores,
+  Máscaras e Tratamentos, Finalizadores, Perfumes e Colônias e Cuidados Específicos.
 - CTA comercial institucional e navegação completa no rodapé.
 
 ## Direção visual e interação
@@ -87,9 +92,13 @@ raster oficial da Orion.
 - Schibsted Grotesk, azul Orion `#0B6186`, fundos claros e âncoras em azul profundo.
 - Hierarquia editorial ampla, fotografia industrial e linhas técnicas discretas.
 - Sistema geométrico de três movimentos construído em CSS para navegar pelo processo.
-- Uma única narrativa sticky, dedicada às marcas e linhas de produto da AtualPet.
 - Alternativas responsivas para a narrativa sticky e suporte completo a
   `prefers-reduced-motion`.
+- Contador progressivo com `IntersectionObserver` e `requestAnimationFrame`,
+  executado uma vez; no modo de movimento reduzido, o valor final é imediato.
+- Carrossel contínuo de logos reais, com identificação explícita entre Marca e Linha.
+- Timeline de Terceirização acompanha o scroll sem controlar a navegação: no
+  desktop há uma introdução sticky; no mobile, a sequência é totalmente vertical.
 
 ## Imagens e procedência
 
@@ -104,7 +113,22 @@ raster oficial da Orion.
 - Logo branca Orion no rodapé: derivada do arquivo oficial fornecido, com transparência e recorte otimizados para o fundo institucional.
 - Open Graph: peça institucional existente preservada em `public/og.png`.
 - Logo Quality Pet: arquivo oficial publicado no site da marca.
-- Logos Mais Dog e Dez Pet: materiais fornecidos pelo usuário; fundos foram removidos apenas para normalização visual, preservando os desenhos originais.
+- Logos +Dog e Dez Pet: materiais fornecidos pelo usuário; fundos foram removidos apenas para normalização visual, preservando os desenhos originais.
+- Constelação Orion: arquivo oficial fornecido pelo usuário e preservado em
+  `public/brand/orion-constellation.png`, usado exclusivamente na Hero de Portfólio.
+
+### Arte oficial da constelação
+
+A arte oficial está configurada em `src/data/portfolio.ts`. O arquivo mantém sua
+proporção original, flutua diretamente sobre o fundo claro da Hero e não recebe
+card, moldura, sombra ou fundo artificial.
+
+As imagens das categorias são dimensionadas pela proporção natural do próprio
+arquivo. Não há altura fixa, `aspect-ratio` imposto ou recorte no wrapper; isso
+preserva tampa, base e escala visual em todos os breakpoints.
+
+O inventário de repetição e redistribuição das imagens está documentado em
+`IMAGE_USAGE_AUDIT.md`.
 
 As demais fotografias servidas pelo site foram convertidas para WebP e
 dimensionadas para reduzir o peso de transferência.

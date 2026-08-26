@@ -7,11 +7,11 @@ export function CampaignHero() {
         <div className="industrial-hero-copy">
           <p className="industrial-hero-kicker">Indústria de soluções para o mercado pet</p>
           <h1 id="hero-title">
-            Tecnologia e excelência no desenvolvimento de soluções para o mercado pet.
+            Indústria que transforma desenvolvimento em produto.
           </h1>
           <p className="industrial-hero-support">
-            A Orion desenvolve, formula, fabrica, envasa e finaliza soluções de higiene,
-            tratamento, cuidado e perfumaria para marcas do setor pet.
+            A Orion integra desenvolvimento, formulação, produção, envase e entrega para
+            materializar soluções B2B de higiene, tratamento, cuidado e perfumaria pet.
           </p>
           <div className="industrial-hero-actions">
             <OrionButton href="#solucoes">Conheça nossas soluções</OrionButton>
@@ -32,16 +32,21 @@ export function CampaignHero() {
             />
           </picture>
           <figcaption>
-            <span>Operação integrada</span>
-            Desenvolvimento · fabricação · envase
+            <span>Estrutura industrial integrada</span>
+            Desenvolvimento · produção · envase
           </figcaption>
         </figure>
       </div>
 
       <div className="container industrial-hero-flow" aria-label="Atuação da Orion">
-        {["Desenvolvimento", "Formulação", "Fabricação", "Envase", "Entrega"].map((item) => (
+        {["Desenvolvimento", "Formulação", "Documentação", "Produção", "Envase", "Entrega"].map((item) => (
           <span key={item}>{item}</span>
         ))}
+      </div>
+
+      {/* Breathing zone between the hero and the scale band: a technical descender, not content. */}
+      <div className="container industrial-hero-transition" aria-hidden="true">
+        <span className="industrial-hero-transition-line" />
       </div>
     </section>
   );

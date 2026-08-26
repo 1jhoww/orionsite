@@ -33,17 +33,18 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
   return (
     <section className="company-history" aria-labelledby="company-history-title">
       <div className="container company-history-heading">
-        <p className="eyebrow">Nossa história</p>
-        <h2 id="company-history-title">A evolução da Orion em marcos confirmados.</h2>
+        <p className="eyebrow">Como tudo começou</p>
+        <h2 id="company-history-title">A história da Orion em marcos confirmados.</h2>
       </div>
 
-      <div className="container company-history-timeline" role="tablist" aria-label="Marcos da história da Orion" tabIndex={-1} onKeyDown={handleTimelineKeys}>
+      <div className="container company-history-timeline" role="tablist" aria-label="Marcos da história da Orion" aria-orientation="horizontal" tabIndex={-1} onKeyDown={handleTimelineKeys}>
         {items.map((item, index) => (
           <button
             type="button"
             role="tab"
             aria-selected={index === safeIndex}
             aria-controls="company-history-panel"
+            id={`company-history-tab-${index}`}
             tabIndex={index === safeIndex ? 0 : -1}
             data-history-index={index}
             onClick={() => selectItem(index)}
@@ -54,7 +55,7 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
         ))}
       </div>
 
-      <div className="container company-history-stage" id="company-history-panel" role="tabpanel" aria-live="polite">
+      <div className="container company-history-stage" id="company-history-panel" role="tabpanel" aria-labelledby={`company-history-tab-${safeIndex}`} aria-live="polite">
         {active.image && (
           <figure>
             <img src={active.image} alt={active.imageAlt ?? ""} width="1200" height="800" loading="lazy" decoding="async" />

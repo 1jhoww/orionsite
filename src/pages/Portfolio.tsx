@@ -1,57 +1,100 @@
-import { InternalHero } from "../components/InternalHero";
-import { OrionButton } from "../components/OrionButton";
+import { AnimatedMetric } from "../components/AnimatedMetric";
+import { BrandEcosystemMarquee } from "../components/BrandEcosystemMarquee";
 import { PageCta } from "../components/PageCta";
+import { PortfolioHero } from "../components/PortfolioHero";
+import { Reveal } from "../components/Reveal";
 import { Seo } from "../components/Seo";
-import { brands } from "../data/site";
+import { confirmedPortfolioScale, portfolioCategories, portfolioConstellation } from "../data/portfolio";
 
 export default function PortfolioPage() {
   return (
     <>
       <Seo
-        title="Portfólio de marcas | Orion"
-        description="Conheça as marcas apresentadas no portfólio institucional da Orion: AtualPet, Quality Pet, Mais Dog e Dez Pet."
+        title="Portfólio industrial de cosméticos pet | Orion"
+        description="Conheça categorias de cosméticos pet desenvolvidas e fabricadas pela Orion, com shampoos, condicionadores, tratamentos, finalizadores e perfumaria."
         path="/portfolio"
-        ogDescription="Identidades distintas materializadas por uma mesma base industrial."
-        imageAlt="Portfólio institucional Orion"
+        ogDescription="Produtos reais organizados por categoria mostram a amplitude de desenvolvimento e fabricação da Orion."
+        image={portfolioConstellation.image ?? "/og.png"}
+        imageWidth={portfolioConstellation.width}
+        imageHeight={portfolioConstellation.height}
+        imageAlt={portfolioConstellation.alt}
       />
       <main id="conteudo" className="internal-page portfolio-page">
-      <InternalHero
-        eyebrow="Portfólio"
-        title="Marcas diferentes. Identidades preservadas."
-        description="A Orion materializa propostas próprias para diferentes experiências de higiene, tratamento, cuidado e perfumaria pet."
-        image="/brand/atualpet-case.webp"
-        imageAlt="Composição de produtos das linhas AtualPet"
-      />
+        <PortfolioHero />
 
-      <section className="portfolio-directory" aria-labelledby="portfolio-directory-title">
-        <div className="container section-heading-compact">
-          <p className="eyebrow">Marcas produzidas</p>
-          <h2 id="portfolio-directory-title">Um portfólio, diferentes universos de marca.</h2>
-        </div>
-        <div className="container portfolio-directory-grid">
-          {brands.map((brand, index) => (
-            <article className={`portfolio-index-card portfolio-index-card--${brand.surface} ${index === 0 ? "portfolio-index-card--feature" : ""}`} id={brand.slug} key={brand.name}>
-              {index === 0 && (
-                <figure className="portfolio-index-visual">
-                  <img src="/brand/atualpet-case.webp" width="1600" height="900" alt="Produtos das cinco linhas AtualPet" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 68vw" />
-                </figure>
-              )}
-              <div className="portfolio-index-logo">
-                <img src={brand.logo} width={brand.width} height={brand.height} alt={brand.alt} loading="lazy" decoding="async" />
-              </div>
-              <div className="portfolio-index-copy">
-                <h3>{brand.name}</h3>
-                <p>{brand.description}</p>
-                <OrionButton href={`/portfolio/${brand.slug}`} variant={index === 0 ? "light" : "secondary"}>
-                  Conhecer a marca
-                </OrionButton>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+        <BrandEcosystemMarquee />
 
-        <PageCta title="Sua marca pode ser o próximo projeto." />
+        <section className="portfolio-introduction" aria-labelledby="portfolio-introduction-title">
+          <div className="container portfolio-introduction-layout">
+            <Reveal>
+              <p className="eyebrow">Portfólio real</p>
+              <h2 id="portfolio-introduction-title">Um portfólio construído para diferentes necessidades.</h2>
+            </Reveal>
+            <Reveal delay={70}>
+              <p>
+                As categorias mostram como desenvolvimento, formulação e fabricação atendem
+                diferentes etapas do cuidado, formatos de uso e apresentações comerciais.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="portfolio-categories" aria-label="Categorias de produtos do portfólio Orion">
+          <div className="container portfolio-category-list">
+            {portfolioCategories.map((category) => (
+              <article className="portfolio-category" id={category.id} key={category.id}>
+                <Reveal as="figure" className="portfolio-category-media">
+                  <picture>
+                    {category.imageSmall && <source media="(max-width: 700px)" srcSet={category.imageSmall} />}
+                    <img
+                      src={category.image}
+                      width={category.imageWidth}
+                      height={category.imageHeight}
+                      alt={category.imageAlt}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 820px) 100vw, 58vw"
+                    />
+                  </picture>
+                </Reveal>
+                <Reveal className="portfolio-category-copy" delay={70}>
+                  <h2>{category.title}</h2>
+                  <p>{category.description}</p>
+                  <p className="portfolio-category-application">{category.application}</p>
+                </Reveal>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="portfolio-scale" aria-labelledby="portfolio-scale-title">
+          <div className="container portfolio-scale-heading">
+            <div>
+              <p className="eyebrow">Escala de desenvolvimento</p>
+              <h2 id="portfolio-scale-title">Experiência aplicada a um portfólio amplo.</h2>
+            </div>
+            <p>
+              Diferentes categorias, aplicações e necessidades reunidas em uma estrutura
+              preparada para desenvolver e fabricar cosméticos pet.
+            </p>
+          </div>
+          <div className="container portfolio-scale-editorial">
+            <AnimatedMetric
+              value={confirmedPortfolioScale.value}
+              suffix={confirmedPortfolioScale.suffix}
+              label={confirmedPortfolioScale.label}
+            />
+            <p className="portfolio-scale-statement">
+              SKUs que representam diferentes categorias, aplicações, apresentações e
+              necessidades do mercado pet.
+            </p>
+          </div>
+        </section>
+
+        <PageCta
+          title="Sua próxima categoria pode nascer aqui."
+          text="Conte à Orion qual produto, aplicação e direção de marca você quer desenvolver."
+        />
       </main>
     </>
   );

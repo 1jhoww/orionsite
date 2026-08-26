@@ -1,76 +1,72 @@
+import { CompanyHistory } from "../components/CompanyHistory";
 import { InternalHero } from "../components/InternalHero";
 import { PageCta } from "../components/PageCta";
 import { Seo } from "../components/Seo";
-import { processSteps } from "../data/site";
 
 export default function AboutPage() {
   return (
     <>
       <Seo
-        title="Sobre a Orion | Indústria para o mercado pet"
-        description="Conheça a atuação integrada da Orion no desenvolvimento, formulação, fabricação e envase de soluções para o mercado pet."
+        title="História da Orion | Indústria para o mercado pet"
+        description="Conheça quem é a Orion hoje e a estrutura preparada para apresentar sua história institucional a partir de marcos confirmados."
         path="/sobre"
-        ogDescription="Desenvolvimento, formulação, fabricação e envase conectados em uma mesma operação."
+        ogDescription="A trajetória institucional da Orion, apresentada somente a partir de informações confirmadas."
       />
-      <main id="conteudo" className="internal-page">
-      <InternalHero
-        eyebrow="Sobre a Orion"
-        title="Uma operação integrada para transformar intenção em produto."
-        description="A Orion desenvolve e fabrica soluções para o mercado pet, conectando direção de marca, formulação, produção, envase e acabamento."
-        image="/media/clean-filling.webp"
-        imageSmall="/media/clean-filling-720.webp"
-        imageAlt="Equipamento de dosagem em uma linha de produção limpa"
-      />
+      <main id="conteudo" className="internal-page about-page">
+        <InternalHero
+          eyebrow="Sobre a Orion"
+          title="Nossa história."
+          description="A Orion é uma indústria voltada ao desenvolvimento e à fabricação de soluções para o mercado pet. Esta página está preparada para apresentar sua trajetória a partir de marcos institucionais confirmados."
+          compact
+        />
 
-      <section className="editorial-section" aria-labelledby="about-operation-title">
-        <div className="container content-split">
-          <div>
-            <p className="eyebrow">Quem é a Orion</p>
-            <h2 id="about-operation-title">Tecnologia aplicada à construção de soluções pet.</h2>
+        <section className="editorial-section about-today" aria-labelledby="about-today-title">
+          <div className="container content-split">
+            <div>
+              <p className="eyebrow">Quem é a Orion hoje</p>
+              <h2 id="about-today-title">Desenvolvimento e indústria em uma mesma direção.</h2>
+            </div>
+            <div className="editorial-copy">
+              <p>
+                A atuação atual da Orion reúne leitura de categoria, desenvolvimento técnico,
+                apoio documental e execução industrial para projetos B2B do mercado pet.
+              </p>
+              <p>
+                Formulação, produção, envase e apresentação avançam de forma coordenada,
+                respeitando o escopo e as necessidades de cada projeto.
+              </p>
+            </div>
           </div>
-          <div className="editorial-copy">
-            <p>
-              A atuação da Orion reúne leitura de categoria, desenvolvimento técnico e
-              execução industrial. Cada etapa contribui para que desempenho, experiência
-              de uso e apresentação avancem na mesma direção.
-            </p>
-            <p>
-              Higiene, tratamento, cuidado especializado, finalização e perfumaria fazem
-              parte das possibilidades apresentadas no portfólio institucional.
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="about-capabilities" aria-labelledby="about-capabilities-title">
-        <div className="container">
-          <div className="section-heading-compact">
-            <p className="eyebrow">Atuação conectada</p>
-            <h2 id="about-capabilities-title">Do desenvolvimento ao acabamento.</h2>
-          </div>
-          <div className="capability-grid">
-            {processSteps.map((step) => (
-              <article key={step.title}>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        <CompanyHistory />
 
-      <section className="about-gallery" aria-label="Estrutura e desenvolvimento Orion">
-        <div className="container about-gallery-grid">
-          <figure>
-            <img src="/media/quality-control.webp" srcSet="/media/quality-control-600.webp 600w, /media/quality-control.webp 1200w" width="1200" height="800" alt="Avaliação técnica em ambiente de laboratório" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 58vw" />
-            <figcaption>Análise e controle</figcaption>
-          </figure>
-          <figure>
-            <img src="/media/formulation.webp" srcSet="/media/formulation-600.webp 600w, /media/formulation.webp 1200w" width="1200" height="800" alt="Textura cosmética durante a formulação" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 42vw" />
-            <figcaption>Formulação e sensorial</figcaption>
-          </figure>
-        </div>
-      </section>
+        <section className="about-purpose" aria-labelledby="about-purpose-title">
+          <div className="container about-purpose-layout">
+            <div>
+              <p className="eyebrow">O que nos move</p>
+              <h2 id="about-purpose-title">Transformar direção de produto em execução consistente.</h2>
+            </div>
+            <div className="about-purpose-copy">
+              <p>Conectar intenção de marca, aplicação e desempenho a um processo industrial organizado.</p>
+              <p>Construir soluções com clareza técnica, atenção documental e coerência entre fórmula, embalagem e apresentação.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="about-current" aria-labelledby="about-current-title">
+          <div className="container about-current-layout">
+            <div>
+              <p className="eyebrow">A Orion hoje</p>
+              <h2 id="about-current-title">Uma estrutura preparada para desenvolver, produzir e entregar.</h2>
+            </div>
+            <div className="about-current-points">
+              <article><div><h3>Direção técnica</h3><p>Definição de categoria, aplicação, formulação e experiência de uso.</p></div></article>
+              <article><div><h3>Coordenação do projeto</h3><p>Apoio documental e identidade visual incorporados conforme o escopo.</p></div></article>
+              <article><div><h3>Execução industrial</h3><p>Produção, envase, finalização e preparação logística conectados.</p></div></article>
+            </div>
+          </div>
+        </section>
 
         <PageCta title="Vamos construir o próximo projeto?" />
       </main>

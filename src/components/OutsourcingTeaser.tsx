@@ -21,8 +21,8 @@ export function OutsourcingTeaser() {
           <p className="eyebrow">Terceirização</p>
           <h2 id="outsourcing-teaser-title">Da direção de marca ao produto final.</h2>
           <p>
-            Uma operação conectada para desenvolver, formular, fabricar, envasar e
-            finalizar soluções com identidade própria.
+            Desenvolvimento, documentação, identidade visual, fabricação e envase podem
+            avançar em uma mesma direção, conforme o escopo de cada projeto.
           </p>
           <OrionButton href="/terceirizacao">Conheça o processo</OrionButton>
         </Reveal>
