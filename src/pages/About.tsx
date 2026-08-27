@@ -1,6 +1,7 @@
 import { CompanyHistory } from "../components/CompanyHistory";
 import { InternalHero } from "../components/InternalHero";
 import { PageCta } from "../components/PageCta";
+import { Reveal } from "../components/Reveal";
 import { Seo } from "../components/Seo";
 
 export default function AboutPage() {
@@ -22,11 +23,11 @@ export default function AboutPage() {
 
         <section className="editorial-section about-today" aria-labelledby="about-today-title">
           <div className="container content-split">
-            <div>
+            <Reveal>
               <p className="eyebrow">Quem é a Orion hoje</p>
               <h2 id="about-today-title">Desenvolvimento e indústria em uma mesma direção.</h2>
-            </div>
-            <div className="editorial-copy">
+            </Reveal>
+            <Reveal className="editorial-copy" delay={70}>
               <p>
                 A atuação atual da Orion reúne leitura de categoria, desenvolvimento técnico,
                 apoio documental e execução industrial para projetos B2B do mercado pet.
@@ -35,7 +36,7 @@ export default function AboutPage() {
                 Formulação, produção, envase e apresentação avançam de forma coordenada,
                 respeitando o escopo e as necessidades de cada projeto.
               </p>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -43,28 +44,28 @@ export default function AboutPage() {
 
         <section className="about-purpose" aria-labelledby="about-purpose-title">
           <div className="container about-purpose-layout">
-            <div>
+            <Reveal>
               <p className="eyebrow">O que nos move</p>
               <h2 id="about-purpose-title">Transformar direção de produto em execução consistente.</h2>
-            </div>
-            <div className="about-purpose-copy">
+            </Reveal>
+            <Reveal className="about-purpose-copy" delay={70}>
               <p>Conectar intenção de marca, aplicação e desempenho a um processo industrial organizado.</p>
               <p>Construir soluções com clareza técnica, atenção documental e coerência entre fórmula, embalagem e apresentação.</p>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         <section className="about-current" aria-labelledby="about-current-title">
           <div className="container about-current-layout">
-            <div>
+            <Reveal>
               <p className="eyebrow">A Orion hoje</p>
               <h2 id="about-current-title">Uma estrutura preparada para desenvolver, produzir e entregar.</h2>
-            </div>
-            <div className="about-current-points">
+            </Reveal>
+            <Reveal className="about-current-points" delay={70}>
               <article><div><h3>Direção técnica</h3><p>Definição de categoria, aplicação, formulação e experiência de uso.</p></div></article>
               <article><div><h3>Coordenação do projeto</h3><p>Apoio documental e identidade visual incorporados conforme o escopo.</p></div></article>
               <article><div><h3>Execução industrial</h3><p>Produção, envase, finalização e preparação logística conectados.</p></div></article>
-            </div>
+            </Reveal>
           </div>
         </section>
 

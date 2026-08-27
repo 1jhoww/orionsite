@@ -1,10 +1,11 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { HelmetProvider } from "react-helmet-async";
-import { MemoryRouter } from "react-router-dom";
+import { createMemoryRouter, MemoryRouter, RouterProvider } from "react-router-dom";
 import { AppRoutes } from "../src/App";
 import { AnimatedMetric } from "../src/components/AnimatedMetric";
+import { Reveal } from "../src/components/Reveal";
 import { buildWhatsAppUrl, ORION_WHATSAPP_NUMBER, validateContactPayload } from "../src/lib/contact";
 
 function renderRoute(path = "/") {
@@ -17,8 +18,26 @@ function renderRoute(path = "/") {
   );
 }
 
+function renderNavigation(initialEntries = ["/"], initialIndex = initialEntries.length - 1) {
+  const router = createMemoryRouter(
+    [{ path: "*", element: <AppRoutes /> }],
+    { initialEntries, initialIndex },
+  );
+
+  return {
+    router,
+    ...render(
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>,
+    ),
+  };
+}
+
 afterEach(() => {
   cleanup();
+  sessionStorage.clear();
+  vi.clearAllMocks();
   document.title = "";
   document.head.querySelectorAll("meta, link[rel='canonical']").forEach((element) => element.remove());
 });
@@ -64,13 +83,250 @@ describe("Orion institutional SPA", () => {
     renderRoute();
 
     expect(document.querySelectorAll(".home-portfolio-index-link")).toHaveLength(6);
-    expect(screen.getByRole("link", { name: /01\s*Condicionadores|Condicionadores/ }).getAttribute("href"))
-      .toMatch(/^\/portfolio#/);
+    expect(screen.getByRole("tab", { name: "Condicionadores" })).toBeTruthy();
     expect(document.querySelector(".home-portfolio-stage img")).toBeTruthy();
     expect(document.querySelector(".home-portfolio + .brand-marquee--home")).toBeTruthy();
     expect(document.querySelectorAll(".brand-marquee--home .brand-marquee-item")).toHaveLength(18);
     expect(document.querySelectorAll(".brand-marquee-item figcaption")).toHaveLength(0);
+    expect(document.querySelector(".brand-marquee .sr-only")?.textContent).not.toMatch(/Marca:|Linha:/);
     expect(document.querySelector(".home-portfolio-showcase img[src*='orion-constellation']")).toBeNull();
+  });
+
+  it("switches the Home portfolio category by tap, not by hover", () => {
+    renderRoute();
+
+    const tabs = screen.getAllByRole("tab", { name: /Shampoos|Condicionadores|Máscaras|Finalizadores|Perfumes|Cuidados/ });
+    expect(tabs).toHaveLength(6);
+    expect(screen.getByRole("tablist", { name: "Categorias" })).toBeTruthy();
+
+    // A category is already selected when the page opens.
+    expect(tabs[0].getAttribute("aria-selected")).toBe("true");
+    expect(tabs[0].getAttribute("tabindex")).toBe("0");
+    const stage = () => document.querySelector(".home-portfolio-stage-name")?.textContent;
+    const stageLink = () => document.querySelector<HTMLAnchorElement>(".home-portfolio-stage-copy a")?.getAttribute("href");
+    expect(stage()).toBe("Shampoos");
+    expect(stageLink()).toBe("/portfolio#shampoos");
+
+    // A plain click — no pointer hover involved — swaps image, name, copy and link.
+    fireEvent.click(tabs[1]);
+    expect(tabs[1].getAttribute("aria-selected")).toBe("true");
+    expect(tabs[0].getAttribute("aria-selected")).toBe("false");
+    expect(stage()).toBe("Condicionadores");
+    expect(stageLink()).toBe("/portfolio#condicionadores");
+    expect(document.querySelector<HTMLImageElement>(".home-portfolio-stage img")?.getAttribute("src"))
+      .toContain("zoom");
+    expect(document.querySelector(".home-portfolio-stage-copy p")?.textContent).toContain("condicionamento");
+
+    // Keyboard focus reaches the same control and selects the same way.
+    fireEvent.focus(tabs[4]);
+    expect(stage()).toBe("Perfumes e Colônias");
+
+    // The desktop hover remains available, and the tab pattern supports arrows.
+    fireEvent.mouseEnter(tabs[2]);
+    expect(stage()).toBe("Máscaras e Tratamentos");
+    fireEvent.keyDown(tabs[2], { key: "ArrowRight" });
+    expect(stage()).toBe("Finalizadores");
+    expect(document.activeElement).toBe(tabs[3]);
+
+    const panel = screen.getByRole("tabpanel");
+    expect(panel.getAttribute("aria-labelledby")).toBe(tabs[3].id);
+
+    // Every image the stage can show comes from the shared portfolio data.
+    const source = readFileSync("src/components/PortfolioPreview.tsx", "utf8");
+    expect(source).toMatch(/portfolioCategories/);
+    expect(source).not.toMatch(/\/media\/|\/brand\//);
+  });
+
+  it("fades between routes instead of sliding the page up", () => {
+    const layout = readFileSync("src/layouts/SiteLayout.tsx", "utf8");
+    expect(layout).toMatch(/RouteView/);
+
+    const routeView = readFileSync("src/components/RouteView.tsx", "utf8");
+    // Keyed by pathname only, so a hash change does not remount the page.
+    expect(routeView).toMatch(/key=\{pathname\}/);
+    expect(routeView.replace(/\/\*[\s\S]*?\*\//g, "")).not.toMatch(/\bhash\b/);
+
+    const css = readFileSync("src/styles/globals.css", "utf8");
+    const fade = css.match(/@keyframes route-fade-in \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(fade).toMatch(/opacity: 0/);
+    expect(fade).toMatch(/opacity: 1/);
+    expect(fade).not.toMatch(/translate/);
+    expect(css).toMatch(/\.route-view \{[^}]*animation: route-fade-in (1[89]\d|2\d\d|3[01]\d)ms/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.route-view \{\s*animation: none/);
+
+    // The old page-wide rise is gone: only individual reading blocks settle a short distance.
+    const reveal = css.match(/\n\.reveal \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(reveal).toMatch(/translateY\(12px\)/);
+    expect(reveal).not.toMatch(/clip-path/);
+    for (const keyframe of ["industrial-copy-in", "industrial-media-in"]) {
+      const block = css.match(new RegExp(`@keyframes ${keyframe} \\{[\\s\\S]*?\\n\\}`))?.[0] ?? "";
+      expect(block).not.toMatch(/translate|clip-path|scale/);
+    }
+  });
+
+  it("reveals internal-page blocks on scroll without duplicating route or timeline motion", () => {
+    const css = readFileSync("src/styles/globals.css", "utf8");
+    const reveal = css.match(/\n\.reveal \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(reveal).toMatch(/opacity:\s*0/);
+    expect(reveal).toMatch(/translateY\(12px\)/);
+    expect(reveal).toMatch(/transition:[^;]*(4[2-9]\d|5\d\d|6[0-5]\d)ms/);
+
+    for (const path of ["/sobre", "/portfolio", "/terceirizacao", "/faq"]) {
+      renderRoute(path);
+      expect(document.querySelectorAll(".internal-page .reveal").length, path).toBeGreaterThanOrEqual(3);
+      if (path === "/terceirizacao") {
+        expect(document.querySelector(".outsourcing-timeline .reveal")).toBeNull();
+      }
+      cleanup();
+    }
+  });
+
+  it("shares one observer across reveal blocks", () => {
+    const originalObserver = globalThis.IntersectionObserver;
+    let instances = 0;
+    let observedElements = 0;
+
+    class CountingIntersectionObserver implements IntersectionObserver {
+      readonly root = null;
+      readonly rootMargin = "0px 0px -7% 0px";
+      readonly thresholds = [0.08];
+
+      constructor() { instances += 1; }
+      disconnect() {}
+      observe() { observedElements += 1; }
+      unobserve() {}
+      takeRecords(): IntersectionObserverEntry[] { return []; }
+    }
+
+    vi.stubGlobal("IntersectionObserver", CountingIntersectionObserver);
+    try {
+      render(
+        <>
+          <Reveal>Primeiro bloco</Reveal>
+          <Reveal>Segundo bloco</Reveal>
+          <Reveal>Terceiro bloco</Reveal>
+        </>,
+      );
+
+      expect(instances).toBe(1);
+      expect(observedElements).toBe(3);
+    } finally {
+      cleanup();
+      vi.stubGlobal("IntersectionObserver", originalObserver);
+    }
+  });
+
+  it("shows reveal content immediately when reduced motion is requested", () => {
+    const originalMatchMedia = window.matchMedia;
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn().mockReturnValue({ matches: true }),
+    });
+
+    try {
+      render(<Reveal>Conteúdo sem movimento</Reveal>);
+      expect(document.querySelector(".reveal.is-visible")?.textContent).toBe("Conteúdo sem movimento");
+
+      const css = readFileSync("src/styles/globals.css", "utf8");
+      const reducedMotion = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
+      expect(reducedMotion).toMatch(/\.reveal\s*\{[^}]*opacity:\s*1\s*!important/);
+      expect(reducedMotion).toMatch(/\.reveal\s*\{[^}]*transform:\s*none\s*!important/);
+      expect(reducedMotion).toMatch(/\.reveal\s*\{[^}]*transition:\s*none\s*!important/);
+    } finally {
+      cleanup();
+      if (originalMatchMedia) Object.defineProperty(window, "matchMedia", { configurable: true, value: originalMatchMedia });
+      else Reflect.deleteProperty(window, "matchMedia");
+    }
+  });
+
+  it("opens a newly clicked route at the top without smooth-scrolling the old page", async () => {
+    const scrollTo = vi.mocked(window.scrollTo);
+    scrollTo.mockClear();
+    let scrollY = 2800;
+    Object.defineProperty(window, "scrollY", { configurable: true, get: () => scrollY });
+    renderNavigation();
+
+    fireEvent.click(screen.getByRole("link", { name: "Explorar portfólio" }));
+    await screen.findByRole("heading", {
+      level: 1,
+      name: "Da higiene à finalização, soluções para diferentes aplicações.",
+    });
+
+    await waitFor(() => expect(scrollTo).toHaveBeenCalled());
+    const optionCalls = scrollTo.mock.calls as unknown as Array<[ScrollToOptions]>;
+    expect(optionCalls.some(([options]) => options.behavior === "smooth")).toBe(false);
+    expect(optionCalls.some(([options]) => options.top === 0)).toBe(true);
+    const css = readFileSync("src/styles/globals.css", "utf8");
+    const documentScrollRule = css.match(/\nhtml\s*\{[^}]*\}/)?.[0] ?? "";
+    expect(documentScrollRule).not.toMatch(/scroll-behavior:\s*smooth/);
+    scrollY = 0;
+  });
+
+  it("restores the previous page position on browser Back", async () => {
+    const scrollTo = vi.mocked(window.scrollTo);
+    scrollTo.mockClear();
+    let scrollY = 2800;
+    Object.defineProperty(window, "scrollY", { configurable: true, get: () => scrollY });
+    const { router } = renderNavigation();
+    fireEvent.scroll(window);
+
+    fireEvent.click(screen.getByRole("link", { name: "Explorar portfólio" }));
+    await screen.findByRole("heading", {
+      level: 1,
+      name: "Da higiene à finalização, soluções para diferentes aplicações.",
+    });
+    scrollY = 0;
+    scrollTo.mockClear();
+
+    await act(async () => router.navigate(-1));
+    await screen.findByRole("heading", {
+      level: 1,
+      name: "Indústria que transforma desenvolvimento em produto.",
+    });
+
+    await waitFor(() => expect(scrollTo).toHaveBeenCalled());
+    const optionCalls = scrollTo.mock.calls as unknown as Array<[ScrollToOptions]>;
+    expect(optionCalls.some(([options]) => options.top === 2800 && options.behavior === "auto")).toBe(true);
+    scrollY = 0;
+  });
+
+  it("gives an explicit cross-route #contato hash priority over saved scroll", async () => {
+    const scrollIntoView = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
+    renderNavigation(["/portfolio"]);
+
+    fireEvent.click(screen.getAllByRole("link", { name: "Contato" })[0]);
+    await screen.findByRole("heading", {
+      level: 1,
+      name: "Indústria que transforma desenvolvimento em produto.",
+    });
+
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" }));
+  });
+
+  it("keeps smooth scrolling local to same-page anchors and disables it for reduced motion", async () => {
+    const originalMatchMedia = window.matchMedia;
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn().mockReturnValue({ matches: false }),
+    });
+    const scrollIntoView = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
+    renderNavigation();
+
+    fireEvent.click(screen.getAllByRole("link", { name: "Contato" })[0]);
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" }));
+
+    cleanup();
+    scrollIntoView.mockClear();
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: vi.fn().mockReturnValue({ matches: true }),
+    });
+    renderNavigation();
+    fireEvent.click(screen.getAllByRole("link", { name: "Contato" })[0]);
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" }));
+
+    if (originalMatchMedia) Object.defineProperty(window, "matchMedia", { configurable: true, value: originalMatchMedia });
+    else Reflect.deleteProperty(window, "matchMedia");
   });
 
   it("keeps decorative indices and diamond markers out of the interface", () => {
@@ -180,8 +436,8 @@ describe("Orion institutional SPA", () => {
     expect(document.querySelector(".portfolio-scale-editorial .animated-metric")?.getAttribute("data-final-value")).toBe("500+");
     expect(document.querySelector(".portfolio-hero + .brand-marquee")).toBeTruthy();
     expect(document.querySelectorAll(".brand-marquee-item")).toHaveLength(18);
-    expect(screen.getByText("Marca: +Dog")).toBeTruthy();
-    expect(screen.getByText("Linha: Dream Color")).toBeTruthy();
+    expect(screen.getAllByText("+Dog").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Dream Color").length).toBeGreaterThan(0);
     expect(screen.queryByText(/comprar/i)).toBeNull();
     expect(document.querySelectorAll('a[href^="/portfolio/"]')).toHaveLength(0);
   });

@@ -14,7 +14,7 @@ export function BrandEcosystemMarquee({
     <section className={`brand-marquee ${className}`.trim()} aria-label={label}>
       {/* Screen readers get the named inventory; the visual band carries logos only. */}
       <ul className="sr-only">
-        {brandEcosystem.map((item) => <li key={`${item.kind}-${item.name}`}>{item.kind}: {item.name}</li>)}
+        {brandEcosystem.map((item) => <li key={`${item.kind}-${item.name}`}>{item.name}</li>)}
       </ul>
 
       <div className="brand-marquee-viewport" aria-hidden="true">

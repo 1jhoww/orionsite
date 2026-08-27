@@ -69,14 +69,14 @@ export default function PortfolioPage() {
 
         <section className="portfolio-scale" aria-labelledby="portfolio-scale-title">
           <div className="container portfolio-scale-heading">
-            <div>
+            <Reveal>
               <p className="eyebrow">Escala de desenvolvimento</p>
               <h2 id="portfolio-scale-title">Experiência aplicada a um portfólio amplo.</h2>
-            </div>
-            <p>
+            </Reveal>
+            <Reveal as="p" delay={70}>
               Diferentes categorias, aplicações e necessidades reunidas em uma estrutura
               preparada para desenvolver e fabricar cosméticos pet.
-            </p>
+            </Reveal>
           </div>
           <div className="container portfolio-scale-editorial">
             <AnimatedMetric

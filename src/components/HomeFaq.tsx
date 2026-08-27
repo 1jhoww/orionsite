@@ -12,7 +12,9 @@ export function HomeFaq() {
           <h2 id="home-faq-title">O essencial para começar uma conversa.</h2>
           <OrionButton href="/faq" variant="secondary">Ver todas as perguntas</OrionButton>
         </Reveal>
-        <FaqAccordion items={faqItems.slice(0, 4)} idPrefix="home-faq" />
+        <Reveal delay={70}>
+          <FaqAccordion items={faqItems.slice(0, 4)} idPrefix="home-faq" />
+        </Reveal>
       </div>
     </section>
   );

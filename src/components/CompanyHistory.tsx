@@ -1,5 +1,6 @@
 import { useState, type KeyboardEvent } from "react";
 import { companyHistory, type CompanyHistoryItem } from "../data/site";
+import { Reveal } from "./Reveal";
 
 type CompanyHistoryProps = {
   items?: CompanyHistoryItem[];
@@ -31,7 +32,7 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
   };
 
   return (
-    <section className="company-history" aria-labelledby="company-history-title">
+    <Reveal as="section" className="company-history" aria-labelledby="company-history-title">
       <div className="container company-history-heading">
         <p className="eyebrow">Como tudo começou</p>
         <h2 id="company-history-title">A história da Orion em marcos confirmados.</h2>
@@ -73,6 +74,6 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
         <span>{safeIndex + 1} / {items.length}</span>
         <button type="button" onClick={() => selectItem(safeIndex + 1)} disabled={safeIndex === items.length - 1}>Próximo</button>
       </div>
-    </section>
+    </Reveal>
   );
 }

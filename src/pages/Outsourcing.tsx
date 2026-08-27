@@ -1,6 +1,7 @@
 import { InternalHero } from "../components/InternalHero";
 import { OutsourcingTimeline } from "../components/OutsourcingTimeline";
 import { PageCta } from "../components/PageCta";
+import { Reveal } from "../components/Reveal";
 import { Seo } from "../components/Seo";
 
 export default function OutsourcingPage() {
@@ -29,10 +30,10 @@ export default function OutsourcingPage() {
 
       <section className="outsourcing-scope" aria-labelledby="outsourcing-scope-title">
         <div className="container outsourcing-scope-layout">
-          <figure>
+          <Reveal as="figure">
             <img src="/media/hero-perfume-lab.webp" width="2000" height="1333" alt="Frascos alinhados durante uma etapa de envase de perfumaria" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 46vw" />
-          </figure>
-          <div>
+          </Reveal>
+          <Reveal delay={70}>
             <p className="eyebrow">Escopo coordenado</p>
             <h2 id="outsourcing-scope-title">Produto, documentação e apresentação preparados em conjunto.</h2>
             <p>A Orion oferece apoio na organização documental e nos processos necessários para regularização e registro do produto. Projetos de identidade visual e materiais gráficos podem ser incorporados conforme o escopo.</p>
@@ -42,7 +43,7 @@ export default function OutsourcingPage() {
               <li>Planejamento de fabricação, envase e acabamento</li>
               <li>Preparação do produto finalizado para logística</li>
             </ul>
-          </div>
+          </Reveal>
         </div>
       </section>
 
