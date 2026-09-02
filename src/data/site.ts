@@ -30,14 +30,6 @@ export type MethodStage = {
   imagePosition?: string;
 };
 
-export type CompanyHistoryItem = {
-  year: string;
-  title: string;
-  description: string;
-  image?: string;
-  imageAlt?: string;
-};
-
 export type ProductionCategory = {
   title: string;
   description: string;
@@ -157,9 +149,10 @@ export const methodStages: MethodStage[] = [
     title: "Desenvolvimento",
     description: "Definição de fórmula, textura, fragrância, desempenho e acabamento em um conjunto coerente.",
     detail: "Fórmula · sensorial · desempenho",
-    image: "/media/formulation.webp",
-    imageSmall: "/media/formulation-600.webp",
-    alt: "Textura sendo analisada durante o desenvolvimento de uma formulação",
+    image: "/media/company/development-daniel.webp",
+    imageSmall: "/media/company/development-daniel-720.webp",
+    alt: "Daniel durante o desenvolvimento de uma formulação no laboratório da Orion",
+    imagePosition: "50% 46%",
   },
   {
     title: "Produção",
@@ -296,10 +289,6 @@ export const processSteps = [
     description: "Envase e apresentação completam um produto pronto para circular.",
   },
 ] as const;
-
-// Add only milestones, dates and media formally validated by Orion.
-// CompanyHistory is intentionally not rendered on /sobre while this list is empty.
-export const companyHistory: CompanyHistoryItem[] = [];
 
 export const faqItems: FaqItem[] = [
   {

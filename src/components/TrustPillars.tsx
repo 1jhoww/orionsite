@@ -49,15 +49,22 @@ export function TrustPillars() {
           </p>
         </Reveal>
 
-        <div className="trust-matrix">
+        <ol className="trust-flow" aria-label="Etapas integradas da capacidade industrial Orion">
           {pillars.map((pillar, index) => (
-            <Reveal className="trust-point" delay={index * 45} key={pillar.title}>
-              <span className="trust-point-icon"><CapabilityIcon name={pillar.icon} /></span>
-              <h3>{pillar.title}</h3>
-              <p>{pillar.description}</p>
+            <Reveal as="li" className="trust-stage" delay={index * 45} key={pillar.title}>
+              <span className="trust-stage-marker" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="trust-stage-copy">
+                <span className="trust-stage-icon trust-point-icon" aria-hidden="true">
+                  <CapabilityIcon name={pillar.icon} />
+                </span>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.description}</p>
+              </div>
             </Reveal>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );

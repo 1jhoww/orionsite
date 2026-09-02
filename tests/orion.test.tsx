@@ -87,9 +87,48 @@ describe("Orion institutional SPA", () => {
     expect(document.querySelector(".home-portfolio-stage img")).toBeTruthy();
     expect(document.querySelector(".home-portfolio + .brand-marquee--home")).toBeTruthy();
     expect(document.querySelectorAll(".brand-marquee--home .brand-marquee-item")).toHaveLength(18);
+    expect(
+      [...document.querySelectorAll<HTMLElement>(".brand-marquee--home .brand-marquee-group:first-child .brand-marquee-item")]
+        .map((item) => item.dataset.brand),
+    ).toEqual([
+      "AtualPet",
+      "The Luxe",
+      "Quality Pet",
+      "Dream Color",
+      "Zoom",
+      "+Dog",
+      "Dream Color Care",
+      "Vanity Pet",
+      "Dez Pet",
+    ]);
+    expect(
+      document.querySelector<HTMLImageElement>('.brand-marquee-item[data-brand="Quality Pet"] img')
+        ?.getAttribute("src"),
+    ).toBe("/brand/quality-pet-logo.png");
     expect(document.querySelectorAll(".brand-marquee-item figcaption")).toHaveLength(0);
     expect(document.querySelector(".brand-marquee .sr-only")?.textContent).not.toMatch(/Marca:|Linha:/);
     expect(document.querySelector(".home-portfolio-showcase img[src*='orion-constellation']")).toBeNull();
+  });
+
+  it("presents the six industrial capabilities as one connected editorial flow", () => {
+    renderRoute();
+
+    expect(document.querySelector(".trust-flow")).toBeTruthy();
+    expect(document.querySelectorAll(".trust-stage")).toHaveLength(6);
+    expect(document.querySelector(".trust-matrix")).toBeNull();
+    expect(
+      [...document.querySelectorAll(".trust-stage h3")].map((heading) => heading.textContent),
+    ).toEqual([
+      "Desenvolvimento e formulação",
+      "Documentação e registro",
+      "Produção",
+      "Envase",
+      "Identidade visual",
+      "Entrega e logística",
+    ]);
+    expect(
+      [...document.querySelectorAll(".trust-stage-marker")].map((marker) => marker.textContent?.trim()),
+    ).toEqual(["01", "02", "03", "04", "05", "06"]);
   });
 
   it("switches the Home portfolio category by tap, not by hover", () => {
@@ -329,16 +368,14 @@ describe("Orion institutional SPA", () => {
     else Reflect.deleteProperty(window, "matchMedia");
   });
 
-  it("keeps decorative indices and diamond markers out of the interface", () => {
+  it("keeps obsolete decorative counters and diamond markers out of unaffected sections", () => {
     renderRoute();
 
-    // Home: metrics, capabilities and the portfolio index carry no ordinal decoration.
+    // Home metrics and the portfolio index carry no legacy ordinal decoration.
+    // The connected capability flow has its own intentional 01–06 sequence.
     expect(document.querySelectorAll(".home-metrics-figure-index")).toHaveLength(0);
     expect(document.querySelectorAll(".trust-point-index")).toHaveLength(0);
     expect(document.querySelectorAll(".home-portfolio-index-number")).toHaveLength(0);
-    for (const ordinal of ["01", "02", "03", "04", "05", "06"]) {
-      expect(screen.queryByText(ordinal)).toBeNull();
-    }
     // The real figures stay.
     expect(document.querySelector(".home-metrics-figure .animated-metric")?.getAttribute("data-final-value")).toBe("500+");
     expect(screen.getByText("SKUs desenvolvidos")).toBeTruthy();
@@ -398,7 +435,7 @@ describe("Orion institutional SPA", () => {
 
   const routes = [
     ["/", "Indústria que transforma desenvolvimento em produto.", "Orion | Soluções industriais para o mercado pet"],
-    ["/sobre", "Nossa história.", "História da Orion | Indústria para o mercado pet"],
+    ["/sobre", "Desenvolvimento e indústria em uma mesma direção.", "História da Orion | Indústria para o mercado pet"],
     ["/portfolio", "Da higiene à finalização, soluções para diferentes aplicações.", "Portfólio industrial de cosméticos pet | Orion"],
     ["/terceirizacao", "Do briefing à produção, etapas coordenadas pela Orion.", "Terceirização para o mercado pet | Orion"],
     ["/faq", "Perguntas frequentes. Respostas diretas.", "Perguntas frequentes | Orion"],
@@ -567,13 +604,91 @@ describe("Orion institutional SPA", () => {
     expect(css).toMatch(/\.outsourcing-timeline-steps[\s\S]*?prefers-reduced-motion/);
   });
 
-  it("keeps future company history unrendered until validated milestones exist", () => {
+  it("shows one concise About opening before the preserved history timeline", () => {
     renderRoute("/sobre");
-    expect(document.querySelector(".company-history")).toBeNull();
+
+    expect(screen.getByRole("heading", { level: 1, name: "Desenvolvimento e indústria em uma mesma direção." })).toBeTruthy();
+    expect(screen.queryByText("Quem é a Orion hoje")).toBeNull();
+    expect(document.querySelector(".about-today")).toBeNull();
+
+    const opening = document.querySelector(".internal-hero");
+    const history = document.querySelector(".company-history");
+    const founders = document.querySelector(".founders-section");
+    const purpose = document.querySelector(".about-purpose");
+    expect(opening).toBeTruthy();
+    expect(history).toBeTruthy();
+    expect(founders).toBeTruthy();
+    expect(purpose).toBeTruthy();
+    expect(opening!.compareDocumentPosition(history!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(history!.compareDocumentPosition(founders!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(founders!.compareDocumentPosition(purpose!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("updates the lightweight global page progress without changing layout", async () => {
+    let scrollY = 0;
+    Object.defineProperty(window, "scrollY", { configurable: true, get: () => scrollY });
+    Object.defineProperty(document.documentElement, "scrollHeight", { configurable: true, value: 2000 });
+    Object.defineProperty(document.documentElement, "clientHeight", { configurable: true, value: 1000 });
+
+    try {
+      renderRoute("/");
+      const progress = screen.getByRole("progressbar", { name: "Progresso da página" });
+      expect(progress.getAttribute("aria-valuenow")).toBe("0");
+
+      scrollY = 500;
+      fireEvent.scroll(window);
+      await waitFor(() => expect(progress.getAttribute("aria-valuenow")).toBe("50"));
+
+      scrollY = 1000;
+      fireEvent.scroll(window);
+      await waitFor(() => expect(progress.getAttribute("aria-valuenow")).toBe("100"));
+
+      const source = readFileSync("src/components/ScrollProgress.tsx", "utf8");
+      expect(source).toMatch(/requestAnimationFrame/);
+      expect(source).toMatch(/scrollHeight/);
+      expect(source).toMatch(/addEventListener\("scroll", scheduleUpdate, \{ passive: true \}\)/);
+      const css = readFileSync("src/styles/globals.css", "utf8");
+      expect(css).toMatch(/\.page-scroll-progress\s*\{[^}]*position:\s*absolute/);
+      expect(css).toMatch(/prefers-reduced-motion[\s\S]*?\.page-scroll-progress span\s*\{\s*transition:\s*none/);
+    } finally {
+      cleanup();
+      Reflect.deleteProperty(window, "scrollY");
+      Reflect.deleteProperty(document.documentElement, "scrollHeight");
+      Reflect.deleteProperty(document.documentElement, "clientHeight");
+    }
+  });
+
+  it("renders the company history as an accessible horizontal timeline and introduces both founders", () => {
+    renderRoute("/sobre");
+
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs).toHaveLength(3);
+    expect(tabs[0].getAttribute("aria-selected")).toBe("true");
+    expect(document.querySelectorAll(".company-history-card")).toHaveLength(3);
+    expect(document.querySelectorAll(".company-history-card img[alt]")).toHaveLength(3);
+    expect(screen.getByRole("progressbar", { name: "Progresso na história da Orion" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Ver marco anterior da história" })).toBeTruthy();
+    const next = screen.getByRole("button", { name: "Ver próximo marco da história" });
+    fireEvent.click(next);
+    expect(tabs[1].getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(tabs[1], { key: "End" });
+    expect(tabs[2].getAttribute("aria-selected")).toBe("true");
+
+    expect(screen.getByRole("heading", { level: 3, name: "Daniel Costa" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 3, name: "José Aparecido Zebiane — Zico" })).toBeTruthy();
+    expect(screen.getByText(/Juntos, Daniel e Zico unem desenvolvimento técnico e visão comercial/)).toBeTruthy();
+    expect(document.querySelector<HTMLImageElement>('.founder-profile img[alt*="Zico"]')?.getAttribute("src"))
+      .toBe("/media/company/jose-aparecido-zebiane.webp");
+
     const dataSource = readFileSync("src/data/site.ts", "utf8");
+    const historySource = readFileSync("src/data/companyHistory.ts", "utf8");
     const componentSource = readFileSync("src/components/CompanyHistory.tsx", "utf8");
-    expect(dataSource).toMatch(/companyHistory:\s*CompanyHistoryItem\[\]\s*=\s*\[\]/);
+    expect(dataSource).toMatch(/development-daniel\.webp/);
+    expect(historySource).toMatch(/companyHistory:\s*CompanyHistoryItem\[\]/);
+    expect(historySource).toMatch(/future "Orion hoje" entry/);
     expect(componentSource).toMatch(/if \(items\.length === 0\) return null/);
     expect(componentSource).toMatch(/ArrowRight|ArrowLeft/);
+    expect(componentSource).toMatch(/onPointerDown|onPointerMove/);
+    expect(componentSource).not.toMatch(/onWheel|scrollY|window\.scrollTo/);
   });
 });

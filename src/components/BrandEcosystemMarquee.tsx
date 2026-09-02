@@ -26,7 +26,11 @@ export function BrandEcosystemMarquee({
               key={groupIndex}
             >
               {brandEcosystem.map((item) => (
-                <figure className="brand-marquee-item" key={`${groupIndex}-${item.kind}-${item.name}`}>
+                <figure
+                  className="brand-marquee-item"
+                  data-brand={item.name}
+                  key={`${groupIndex}-${item.kind}-${item.name}`}
+                >
                   <img src={item.logo} width={item.width} height={item.height} alt="" loading="lazy" decoding="async" />
                 </figure>
               ))}

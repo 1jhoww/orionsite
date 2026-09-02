@@ -124,7 +124,7 @@ export const confirmedScaleFigures = [
   confirmedMarketExperience,
 ] as const;
 
-export const brandEcosystem = [
+const brandEcosystemInventory = [
   ...brands.map((brand) => ({
     name: brand.name,
     logo: brand.logo,
@@ -139,4 +139,27 @@ export const brandEcosystem = [
     height: 300,
     kind: "Linha" as const,
   })),
+];
+
+/**
+ * The three independent brands divide the larger AtualPet family into short,
+ * visually varied groups. The marquee component duplicates this single source
+ * only at render time so both halves of the infinite loop stay identical.
+ */
+export const brandEcosystemOrder = [
+  "AtualPet",
+  "The Luxe",
+  "Quality Pet",
+  "Dream Color",
+  "Zoom",
+  "+Dog",
+  "Dream Color Care",
+  "Vanity Pet",
+  "Dez Pet",
 ] as const;
+
+export const brandEcosystem = brandEcosystemOrder.map((name) => {
+  const item = brandEcosystemInventory.find((candidate) => candidate.name === name);
+  if (!item) throw new Error(`Marca ausente no ecossistema do portfólio: ${name}`);
+  return item;
+});

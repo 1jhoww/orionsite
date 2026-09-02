@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ScrollProgress } from "./ScrollProgress";
 
 const links = [
   { label: "Início", href: "/", match: (pathname: string) => pathname === "/" },
@@ -101,6 +102,7 @@ export function Header() {
           <Link className="header-cta" to="/#contato" onClick={() => setOpen(false)}>Contato</Link>
         </nav>
       </div>
+      <ScrollProgress />
     </header>
   );
 }
