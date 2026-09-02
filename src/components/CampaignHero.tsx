@@ -21,12 +21,12 @@ export function CampaignHero() {
 
         <figure className="industrial-hero-media">
           <picture>
-            <source media="(max-width: 820px)" srcSet="/media/clean-filling-720.webp" />
+            <source media="(max-width: 820px)" srcSet="/media/factory/tanques-orion-720.webp" />
             <img
-              src="/media/clean-filling.webp"
-              width="1200"
-              height="2132"
-              alt="Sistema automatizado de dosagem em uma linha de produção cosmética"
+              src="/media/factory/tanques-orion.webp"
+              width="1440"
+              height="2158"
+              alt="Tanques industriais reais da fábrica Orion integrados aos equipamentos de produção"
               fetchPriority="high"
               decoding="async"
             />

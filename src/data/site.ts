@@ -17,6 +17,7 @@ export type TechnologyMedia = {
   height: number;
   alt: string;
   caption: string;
+  imagePosition?: string;
 };
 
 export type MethodStage = {
@@ -26,6 +27,7 @@ export type MethodStage = {
   image: string;
   imageSmall: string;
   alt: string;
+  imagePosition?: string;
 };
 
 export type CompanyHistoryItem = {
@@ -45,6 +47,7 @@ export type ProductionCategory = {
   imageWidth: number;
   imageHeight: number;
   imageAlt: string;
+  imagePosition?: string;
 };
 
 export type AtualPetLine = {
@@ -113,12 +116,13 @@ export const brands: Brand[] = [
 export const technologyMedia: TechnologyMedia[] = [
   {
     placement: "main",
-    image: "/media/og-editorial.webp",
-    imageSmall: "/media/og-editorial.webp",
-    width: 1200,
-    height: 630,
-    alt: "Linha de envase com frascos em uma estrutura industrial",
-    caption: "Estrutura de envase",
+    image: "/media/factory/estoque-materias-primas-orion.webp",
+    imageSmall: "/media/factory/estoque-materias-primas-orion-720.webp",
+    width: 1440,
+    height: 2158,
+    alt: "Estoque real de matérias-primas da fábrica Orion, com insumos organizados em prateleiras",
+    caption: "Estoque de matérias-primas",
+    imagePosition: "44% 50%",
   },
   {
     placement: "detail",
@@ -161,9 +165,10 @@ export const methodStages: MethodStage[] = [
     title: "Produção",
     description: "A solução ganha escala por meio de fabricação, envase e finalização organizados.",
     detail: "Fabricação · envase · finalização",
-    image: "/media/clean-filling.webp",
-    imageSmall: "/media/clean-filling-720.webp",
-    alt: "Equipamento de dosagem em uma linha de produção limpa",
+    image: "/media/factory/envase-orion.webp",
+    imageSmall: "/media/factory/envase-orion-720.webp",
+    alt: "Envase real de produtos na linha de produção da fábrica Orion",
+    imagePosition: "50% 58%",
   },
 ];
 
@@ -254,11 +259,12 @@ export const productionCategories: ProductionCategory[] = [
     title: "Finalização e perfumaria",
     description: "Textura, fragrância e acabamento trabalhados para completar a experiência de cuidado e reforçar a identidade da marca.",
     products: ["Colônias", "Sprays", "Finalizadores", "Brilho", "Acabamento"],
-    image: "/media/fragrance-vials.webp",
-    imageSmall: "/media/fragrance-vials.webp",
-    imageWidth: 1500,
-    imageHeight: 932,
-    imageAlt: "Vidrarias com essências em uma bancada de desenvolvimento olfativo",
+    image: "/media/factory/envase-perfume-orion.webp",
+    imageSmall: "/media/factory/envase-perfume-orion-720.webp",
+    imageWidth: 1440,
+    imageHeight: 2158,
+    imageAlt: "Frascos de perfume durante o envase real na fábrica Orion",
+    imagePosition: "44% 62%",
   },
   {
     title: "Cuidado especializado",
@@ -312,9 +318,9 @@ export const faqItems: FaqItem[] = [
       "A atuação apresentada neste site reúne higiene, tratamento de pelagem, cuidado especializado, finalização e perfumaria pet.",
   },
   {
-    question: "Como iniciar uma conversa com a Orion?",
+    question: "Como falar com a Orion?",
     answer:
-      "Envie uma mensagem para administrativo@orionpet.com.br com o contexto da sua marca e do projeto. A equipe dará continuidade pelo canal institucional.",
+      "Envie uma mensagem pelo WhatsApp, mande um e-mail para administrativo@orionpet.com.br ou fale diretamente com nossa equipe pelo telefone (11) 96232-0441.",
   },
   {
     question: "Quais marcas fazem parte do portfólio apresentado?",

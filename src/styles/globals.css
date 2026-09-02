@@ -296,7 +296,7 @@ ul {
 
 .industrial-hero-media img {
   object-fit: cover;
-  object-position: center 58%;
+  object-position: 50% 45%;
 }
 
 .industrial-hero-media figcaption {
@@ -2916,7 +2916,7 @@ section[id] {
 }
 
 .technology-main img {
-  object-position: center 64%;
+  object-position: 44% 50%;
 }
 
 .technology-gallery figure:hover img {
@@ -7356,6 +7356,10 @@ button.button:disabled {
   padding: clamp(12px, 1.8vw, 26px);
   overflow: visible;
   background: #dde5e3;
+}
+
+.portfolio-category-media.portfolio-category-media--transparent {
+  background: transparent;
 }
 
 .portfolio-category-media picture,

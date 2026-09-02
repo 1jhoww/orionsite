@@ -53,7 +53,7 @@ export default function Home() {
             <h2 id="technology-title">Uma operação industrial conectada.</h2>
           </Reveal>
           <Reveal delay={70}>
-            <p>Desenvolvimento, análise, fabricação e envase trabalham na mesma direção — do comportamento da fórmula à apresentação final do produto.</p>
+            <p>Desenvolvimento, análise, matérias-primas, fabricação, envase e armazenamento trabalham na mesma direção — do comportamento da fórmula à apresentação final do produto.</p>
           </Reveal>
         </div>
         <TechnologyGallery />

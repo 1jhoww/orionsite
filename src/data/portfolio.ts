@@ -34,10 +34,10 @@ export const portfolioCategories: PortfolioCategory[] = [
       "Soluções de higienização desenvolvidas para diferentes rotinas, tipos de pelagem, diluições e necessidades de uso profissional.",
     application:
       "A categoria reúne propostas para limpeza, neutralização, branqueamento, volume e cuidados direcionados.",
-    image: "/media/lines/dream-color.webp",
-    imageSmall: "/media/lines/dream-color-720.webp",
-    imageWidth: 1440,
-    imageHeight: 960,
+    image: "/media/categories/shampoos-orion.webp",
+    imageSmall: "/media/categories/shampoos-orion-720.webp",
+    imageWidth: 1536,
+    imageHeight: 1024,
     imageAlt: "Shampoos Dream Color em embalagens profissionais ao lado de produtos de condicionamento e perfumaria",
   },
   {

@@ -43,7 +43,12 @@ export default function PortfolioPage() {
           <div className="container portfolio-category-list">
             {portfolioCategories.map((category) => (
               <article className="portfolio-category" id={category.id} key={category.id}>
-                <Reveal as="figure" className="portfolio-category-media">
+                <Reveal
+                  as="figure"
+                  className={`portfolio-category-media ${
+                    category.id === "shampoos" ? "portfolio-category-media--transparent" : ""
+                  }`}
+                >
                   <picture>
                     {category.imageSmall && <source media="(max-width: 700px)" srcSet={category.imageSmall} />}
                     <img

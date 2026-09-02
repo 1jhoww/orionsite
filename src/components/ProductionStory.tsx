@@ -22,6 +22,7 @@ export function ProductionStory() {
                 loading="lazy"
                 decoding="async"
                 sizes="(max-width: 820px) 100vw, 58vw"
+                style={{ objectPosition: category.imagePosition }}
               />
             </picture>
           </figure>

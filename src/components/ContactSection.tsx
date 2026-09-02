@@ -41,18 +41,22 @@ export function ContactSection() {
           <p className="eyebrow">Contato</p>
           <h2 id="contact-title">Vamos conversar sobre seu projeto?</h2>
           <p>
-            Empresas interessadas em desenvolvimento, produção, terceirização ou
-            informações institucionais podem falar diretamente com a Orion.
+            Envie uma mensagem, mande um e-mail ou fale diretamente com nossa equipe
+            por telefone. Se preferir, apresente seu projeto pelo formulário ao lado.
           </p>
 
           <div className="contact-channels" aria-label="Canais de contato">
+            <div>
+              <span>Mensagem</span>
+              <a href={whatsappHref} target="_blank" rel="noreferrer">Conversar pelo WhatsApp</a>
+            </div>
             <div>
               <span>E-mail</span>
               <a href="mailto:administrativo@orionpet.com.br">administrativo@orionpet.com.br</a>
             </div>
             <div>
-              <span>WhatsApp</span>
-              <a href={whatsappHref} target="_blank" rel="noreferrer">(11) 96232-0441</a>
+              <span>Telefone</span>
+              <a href="tel:+5511962320441">(11) 96232-0441</a>
             </div>
           </div>
         </Reveal>

@@ -65,6 +65,7 @@ export function OrionProcess() {
               loading="lazy"
               decoding="async"
               sizes="(max-width: 820px) 100vw, 62vw"
+              style={{ objectPosition: active.imagePosition }}
             />
           </picture>
           <figcaption aria-live="polite">
@@ -78,7 +79,7 @@ export function OrionProcess() {
         <div className="method-mobile-stage">
           <div className="method-mobile-sticky">
             <figure className="method-mobile-media" key={`mobile-${active.image}`}>
-              <img src={active.imageSmall} width="720" height="480" alt={active.alt} loading="lazy" decoding="async" sizes="100vw" />
+              <img src={active.imageSmall} width="720" height="480" alt={active.alt} loading="lazy" decoding="async" sizes="100vw" style={{ objectPosition: active.imagePosition }} />
               <figcaption>
                 <strong>{active.title}</strong>
                 <span>{active.detail}</span>

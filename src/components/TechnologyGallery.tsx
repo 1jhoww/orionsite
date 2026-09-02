@@ -11,13 +11,14 @@ export function TechnologyGallery() {
       <Reveal as="figure" className="technology-main">
         <img
           src={main.image}
-          srcSet={`${main.imageSmall} 720w, ${main.image} 1200w`}
+          srcSet={`${main.imageSmall} 720w, ${main.image} ${main.width}w`}
           width={main.width}
           height={main.height}
           alt={main.alt}
           loading="lazy"
           decoding="async"
           sizes="(max-width: 820px) 100vw, 58vw"
+          style={{ objectPosition: main.imagePosition }}
         />
         <figcaption>{main.caption}</figcaption>
       </Reveal>
