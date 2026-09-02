@@ -22,7 +22,7 @@ export const founders: Founder[] = [
     imagePosition: "50% 8%",
   },
   {
-    name: "José Aparecido Zebiane — Zico",
+    name: "José Aparecido Zebiani — Zico",
     focus: "Visão comercial e mercado",
     description:
       "Com forte atuação comercial e experiência no mercado pet, Zico traz para a Orion a proximidade com clientes, parceiros e as necessidades reais do setor. Essa visão de mercado contribui diretamente para transformar oportunidades em produtos e relações duradouras.",
