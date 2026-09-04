@@ -10,8 +10,6 @@ export type CompanyHistoryItem = {
   imagePosition?: string;
 };
 
-// New milestones can be appended here, including a future "Orion hoje" entry
-// when current-factory photography and its approved copy are available.
 export const companyHistory: CompanyHistoryItem[] = [
   {
     period: "O início",
@@ -38,18 +36,6 @@ export const companyHistory: CompanyHistoryItem[] = [
     imagePosition: "50% 50%",
   },
   {
-    period: "Antes da obra",
-    title: "O estoque antes da ampliação.",
-    description:
-      "Um registro do estoque antes da obra de ampliação da estrutura.",
-    image: "/media/company/history-stock-before-expansion.webp",
-    imageSmall: "/media/company/history-stock-before-expansion-720.webp",
-    imageAlt: "Corredor do estoque da Orion antes da obra de ampliação",
-    imageWidth: 1200,
-    imageHeight: 1599,
-    imagePosition: "50% 50%",
-  },
-  {
     period: "Expansão",
     title: "Mais espaço para seguir avançando.",
     description:
@@ -60,5 +46,17 @@ export const companyHistory: CompanyHistoryItem[] = [
     imageWidth: 960,
     imageHeight: 1280,
     imagePosition: "50% 66%",
+  },
+  {
+    period: "Atualmente",
+    title: "A estrutura atual da fábrica.",
+    description:
+      "Um registro da estrutura atual da fábrica da Orion.",
+    image: "/media/company/history-current-factory.webp",
+    imageSmall: "/media/company/history-current-factory-720.webp",
+    imageAlt: "Estrutura atual da fábrica da Orion",
+    imageWidth: 1440,
+    imageHeight: 2160,
+    imagePosition: "50% 50%",
   },
 ];

@@ -33,8 +33,31 @@ export default function AboutPage() {
               <h2 id="about-purpose-title">Transformar direção de produto em execução consistente.</h2>
             </Reveal>
             <Reveal className="about-purpose-copy" delay={70}>
-              <p>Conectar intenção de marca, aplicação e desempenho a um processo industrial organizado.</p>
-              <p>Construir soluções com clareza técnica, atenção documental e coerência entre fórmula, embalagem e apresentação.</p>
+              <article>
+                <h3>Missão</h3>
+                <p>
+                  Desenvolver e produzir soluções para o mercado pet com qualidade, cuidado e conhecimento técnico,
+                  transformando boas ideias em produtos que geram valor para marcas, parceiros e consumidores.
+                </p>
+              </article>
+              <article>
+                <h3>Visão</h3>
+                <p>
+                  Inovar continuamente e consolidar a Orion como uma indústria reconhecida pela qualidade de seus
+                  produtos, capacidade de desenvolvimento e evolução constante.
+                </p>
+              </article>
+              <article className="about-purpose-values">
+                <h3>Valores</h3>
+                <ul>
+                  <li>Qualidade em cada etapa</li>
+                  <li>Inovação e desenvolvimento contínuo</li>
+                  <li>Compromisso com clientes e parceiros</li>
+                  <li>Responsabilidade na produção</li>
+                  <li>Conhecimento técnico</li>
+                  <li>Relações construídas com confiança</li>
+                </ul>
+              </article>
             </Reveal>
           </div>
         </section>

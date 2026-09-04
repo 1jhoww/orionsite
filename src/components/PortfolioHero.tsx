@@ -16,6 +16,13 @@ export function PortfolioHero() {
         {portfolioConstellation.image && (
           <figure className="portfolio-hero-constellation">
             <picture>
+              {portfolioConstellation.mobileImage && (
+                <source
+                  media="(max-width: 820px)"
+                  srcSet={portfolioConstellation.mobileImage}
+                  type="image/webp"
+                />
+              )}
               {portfolioConstellation.imageWebp && (
                 <source srcSet={portfolioConstellation.imageWebp} type="image/webp" />
               )}

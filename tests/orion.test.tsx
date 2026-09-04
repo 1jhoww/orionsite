@@ -82,7 +82,7 @@ describe("Orion institutional SPA", () => {
   it("gives the Home portfolio call a category index and a logo marquee without badges", () => {
     renderRoute();
 
-    expect(document.querySelectorAll(".home-portfolio-index-link")).toHaveLength(6);
+    expect(document.querySelectorAll(".home-portfolio-index-link")).toHaveLength(5);
     expect(screen.getByRole("tab", { name: "Condicionadores" })).toBeTruthy();
     expect(document.querySelector(".home-portfolio-stage img")).toBeTruthy();
     expect(document.querySelector(".home-portfolio + .brand-marquee--home")).toBeTruthy();
@@ -134,8 +134,8 @@ describe("Orion institutional SPA", () => {
   it("switches the Home portfolio category by tap, not by hover", () => {
     renderRoute();
 
-    const tabs = screen.getAllByRole("tab", { name: /Shampoos|Condicionadores|Máscaras|Finalizadores|Perfumes|Cuidados/ });
-    expect(tabs).toHaveLength(6);
+    const tabs = screen.getAllByRole("tab", { name: /Shampoos|Condicionadores|Máscaras|Perfumes|Cuidados/ });
+    expect(tabs).toHaveLength(5);
     expect(screen.getByRole("tablist", { name: "Categorias" })).toBeTruthy();
 
     // A category is already selected when the page opens.
@@ -153,18 +153,18 @@ describe("Orion institutional SPA", () => {
     expect(stage()).toBe("Condicionadores");
     expect(stageLink()).toBe("/portfolio#condicionadores");
     expect(document.querySelector<HTMLImageElement>(".home-portfolio-stage img")?.getAttribute("src"))
-      .toContain("zoom");
+      .toContain("condicionadores-orion-portfolio");
     expect(document.querySelector(".home-portfolio-stage-copy p")?.textContent).toContain("condicionamento");
 
     // Keyboard focus reaches the same control and selects the same way.
-    fireEvent.focus(tabs[4]);
-    expect(stage()).toBe("Perfumes e Colônias");
+    fireEvent.focus(tabs[3]);
+    expect(stage()).toBe("Perfumes");
 
     // The desktop hover remains available, and the tab pattern supports arrows.
     fireEvent.mouseEnter(tabs[2]);
-    expect(stage()).toBe("Máscaras e Tratamentos");
+    expect(stage()).toBe("Máscaras");
     fireEvent.keyDown(tabs[2], { key: "ArrowRight" });
-    expect(stage()).toBe("Finalizadores");
+    expect(stage()).toBe("Perfumes");
     expect(document.activeElement).toBe(tabs[3]);
 
     const panel = screen.getByRole("tabpanel");
@@ -459,17 +459,18 @@ describe("Orion institutional SPA", () => {
   it("organizes the portfolio by its final taxonomy without product-name lists", () => {
     renderRoute("/portfolio");
 
-    for (const category of ["Shampoos", "Condicionadores", "Máscaras e Tratamentos", "Finalizadores", "Perfumes e Colônias", "Cuidados Específicos"]) {
+    for (const category of ["Shampoos", "Condicionadores", "Máscaras", "Perfumes", "Cuidados Especiais"]) {
       expect(screen.getByRole("heading", { level: 2, name: category })).toBeTruthy();
     }
-    expect(document.querySelectorAll(".portfolio-category")).toHaveLength(6);
+    expect(document.querySelectorAll(".portfolio-category")).toHaveLength(5);
+    expect(screen.queryByText("Finalizadores")).toBeNull();
     expect(document.querySelectorAll(".portfolio-category-products")).toHaveLength(0);
     expect(screen.queryByText("Dream Color Shampoo Branqueador")).toBeNull();
     expect(screen.queryByText("The Luxe Condicionador Cereja & Avelã")).toBeNull();
     expect(screen.queryByText("Vanity Pet Gold")).toBeNull();
-    expect(document.querySelector<HTMLImageElement>(".portfolio-hero-constellation img")?.src).toContain("/brand/orion-constellation.png");
+    expect(document.querySelector<HTMLImageElement>(".portfolio-hero-constellation img")?.src).toContain("/brand/orion-constellation-v2.png");
     expect(document.querySelector(".portfolio-hero-constellation source[type='image/webp']")?.getAttribute("srcset"))
-      .toBe("/brand/orion-constellation.webp");
+      .toBe("/brand/orion-constellation-v2-720.webp");
     expect(document.querySelector(".portfolio-scale-editorial .animated-metric")?.getAttribute("data-final-value")).toBe("500+");
     expect(document.querySelector(".portfolio-hero + .brand-marquee")).toBeTruthy();
     expect(document.querySelectorAll(".brand-marquee-item")).toHaveLength(18);
@@ -662,20 +663,21 @@ describe("Orion institutional SPA", () => {
     renderRoute("/sobre");
 
     const tabs = screen.getAllByRole("tab");
-    expect(tabs).toHaveLength(3);
+    expect(tabs).toHaveLength(4);
     expect(tabs[0].getAttribute("aria-selected")).toBe("true");
-    expect(document.querySelectorAll(".company-history-card")).toHaveLength(3);
-    expect(document.querySelectorAll(".company-history-card img[alt]")).toHaveLength(3);
+    expect(document.querySelectorAll(".company-history-card")).toHaveLength(4);
+    expect(document.querySelectorAll(".company-history-card img[alt]")).toHaveLength(4);
+    expect(screen.queryByRole("tab", { name: /Antes da obra/ })).toBeNull();
     expect(screen.getByRole("progressbar", { name: "Progresso na história da Orion" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Ver marco anterior da história" })).toBeTruthy();
     const next = screen.getByRole("button", { name: "Ver próximo marco da história" });
     fireEvent.click(next);
     expect(tabs[1].getAttribute("aria-selected")).toBe("true");
     fireEvent.keyDown(tabs[1], { key: "End" });
-    expect(tabs[2].getAttribute("aria-selected")).toBe("true");
+    expect(tabs[3].getAttribute("aria-selected")).toBe("true");
 
     expect(screen.getByRole("heading", { level: 3, name: "Daniel Costa" })).toBeTruthy();
-    expect(screen.getByRole("heading", { level: 3, name: "José Aparecido Zebiane — Zico" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 3, name: "José Aparecido Zebiani — Zico" })).toBeTruthy();
     expect(screen.getByText(/Juntos, Daniel e Zico unem desenvolvimento técnico e visão comercial/)).toBeTruthy();
     expect(document.querySelector<HTMLImageElement>('.founder-profile img[alt*="Zico"]')?.getAttribute("src"))
       .toBe("/media/company/jose-aparecido-zebiane.webp");
@@ -685,7 +687,8 @@ describe("Orion institutional SPA", () => {
     const componentSource = readFileSync("src/components/CompanyHistory.tsx", "utf8");
     expect(dataSource).toMatch(/development-daniel\.webp/);
     expect(historySource).toMatch(/companyHistory:\s*CompanyHistoryItem\[\]/);
-    expect(historySource).toMatch(/future "Orion hoje" entry/);
+    expect(historySource).toMatch(/history-current-factory\.webp/);
+    expect(historySource).not.toMatch(/history-stock-before-expansion/);
     expect(componentSource).toMatch(/if \(items\.length === 0\) return null/);
     expect(componentSource).toMatch(/ArrowRight|ArrowLeft/);
     expect(componentSource).toMatch(/onPointerDown|onPointerMove/);

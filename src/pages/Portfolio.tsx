@@ -11,7 +11,7 @@ export default function PortfolioPage() {
     <>
       <Seo
         title="Portfólio industrial de cosméticos pet | Orion"
-        description="Conheça categorias de cosméticos pet desenvolvidas e fabricadas pela Orion, com shampoos, condicionadores, tratamentos, finalizadores e perfumaria."
+        description="Conheça categorias de cosméticos pet desenvolvidas e fabricadas pela Orion, com shampoos, condicionadores, máscaras, perfumes e cuidados especiais."
         path="/portfolio"
         ogDescription="Produtos reais organizados por categoria mostram a amplitude de desenvolvimento e fabricação da Orion."
         image={portfolioConstellation.image ?? "/og.png"}
@@ -45,12 +45,13 @@ export default function PortfolioPage() {
               <article className="portfolio-category" id={category.id} key={category.id}>
                 <Reveal
                   as="figure"
-                  className={`portfolio-category-media ${
-                    category.id === "shampoos" ? "portfolio-category-media--transparent" : ""
-                  }`}
+                  className="portfolio-category-media portfolio-category-media--transparent"
                 >
                   <picture>
-                    {category.imageSmall && <source media="(max-width: 700px)" srcSet={category.imageSmall} />}
+                    {category.imageSmall && (
+                      <source media="(max-width: 700px)" srcSet={category.imageSmall} type="image/webp" />
+                    )}
+                    {category.imageWebp && <source srcSet={category.imageWebp} type="image/webp" />}
                     <img
                       src={category.image}
                       width={category.imageWidth}

@@ -144,64 +144,52 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
         ))}
       </div>
 
-      <div
-        className="container company-history-track"
-        ref={trackRef}
-        onScroll={updateActiveFromScroll}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endPointerDrag}
-        onPointerCancel={endPointerDrag}
-        aria-label="Linha do tempo da Orion"
-      >
-        {items.map((item, index) => (
-          <article
-            className={`company-history-card ${index === safeIndex ? "is-active" : ""}`}
-            id={`company-history-panel-${index}`}
-            role="tabpanel"
-            aria-labelledby={`company-history-tab-${index}`}
-            aria-current={index === safeIndex ? "step" : undefined}
-            ref={(node) => { cardRefs.current[index] = node; }}
-            key={`${item.period}-${item.image}`}
-          >
-            <figure>
-              <picture>
-                <source media="(max-width: 720px)" srcSet={item.imageSmall} />
-                <img
-                  src={item.image}
-                  alt={item.imageAlt}
-                  width={item.imageWidth}
-                  height={item.imageHeight}
-                  loading="lazy"
-                  decoding="async"
-                  draggable="false"
-                  style={{ objectPosition: item.imagePosition }}
-                />
-              </picture>
-            </figure>
-            <div className="company-history-copy">
-              <span>{item.period}</span>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div className="container company-history-controls" aria-label="Navegação da história">
-        <div className="company-history-progress">
-          <span aria-live="polite">Marco {safeIndex + 1} de {items.length}</span>
-          <div
-            role="progressbar"
-            aria-label="Progresso na história da Orion"
-            aria-valuemin={1}
-            aria-valuemax={items.length}
-            aria-valuenow={safeIndex + 1}
-          >
-            <i style={{ width: `${progress}%` }} />
-          </div>
+      <div className="company-history-stage">
+        <div
+          className="container company-history-track"
+          ref={trackRef}
+          onScroll={updateActiveFromScroll}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endPointerDrag}
+          onPointerCancel={endPointerDrag}
+          aria-label="Linha do tempo da Orion"
+        >
+          {items.map((item, index) => (
+            <article
+              className={`company-history-card ${index === safeIndex ? "is-active" : ""}`}
+              id={`company-history-panel-${index}`}
+              role="tabpanel"
+              aria-labelledby={`company-history-tab-${index}`}
+              aria-current={index === safeIndex ? "step" : undefined}
+              ref={(node) => { cardRefs.current[index] = node; }}
+              key={`${item.period}-${item.image}`}
+            >
+              <figure>
+                <picture>
+                  <source media="(max-width: 720px)" srcSet={item.imageSmall} />
+                  <img
+                    src={item.image}
+                    alt={item.imageAlt}
+                    width={item.imageWidth}
+                    height={item.imageHeight}
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    style={{ objectPosition: item.imagePosition }}
+                  />
+                </picture>
+              </figure>
+              <div className="company-history-copy">
+                <span>{item.period}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </article>
+          ))}
         </div>
-        <div className="company-history-arrows">
+
+        <div className="company-history-arrows" role="group" aria-label="Navegação da história">
           <button
             type="button"
             aria-label="Ver marco anterior da história"
@@ -218,6 +206,21 @@ export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) 
           >
             <span aria-hidden="true">→</span>
           </button>
+        </div>
+      </div>
+
+      <div className="container company-history-controls">
+        <div className="company-history-progress">
+          <span aria-live="polite">Marco {safeIndex + 1} de {items.length}</span>
+          <div
+            role="progressbar"
+            aria-label="Progresso na história da Orion"
+            aria-valuemin={1}
+            aria-valuemax={items.length}
+            aria-valuenow={safeIndex + 1}
+          >
+            <i style={{ width: `${progress}%` }} />
+          </div>
         </div>
       </div>
     </Reveal>

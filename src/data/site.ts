@@ -108,13 +108,13 @@ export const brands: Brand[] = [
 export const technologyMedia: TechnologyMedia[] = [
   {
     placement: "main",
-    image: "/media/factory/estoque-materias-primas-orion.webp",
-    imageSmall: "/media/factory/estoque-materias-primas-orion-720.webp",
+    image: "/media/factory/estoque-materias-primas-orion-v2.webp",
+    imageSmall: "/media/factory/estoque-materias-primas-orion-v2-720.webp",
     width: 1440,
-    height: 2158,
+    height: 2160,
     alt: "Estoque real de matérias-primas da fábrica Orion, com insumos organizados em prateleiras",
     caption: "Estoque de matérias-primas",
-    imagePosition: "44% 50%",
+    imagePosition: "56% 50%",
   },
   {
     placement: "detail",
@@ -158,8 +158,8 @@ export const methodStages: MethodStage[] = [
     title: "Produção",
     description: "A solução ganha escala por meio de fabricação, envase e finalização organizados.",
     detail: "Fabricação · envase · finalização",
-    image: "/media/factory/envase-orion.webp",
-    imageSmall: "/media/factory/envase-orion-720.webp",
+    image: "/media/factory/envase-orion-v2.webp",
+    imageSmall: "/media/factory/envase-orion-v2-720.webp",
     alt: "Envase real de produtos na linha de produção da fábrica Orion",
     imagePosition: "50% 58%",
   },

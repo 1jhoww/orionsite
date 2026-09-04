@@ -1,16 +1,14 @@
 import { atualPetLines, brands } from "./site";
 
 /**
- * Official constellation artwork. To publish a new version, overwrite
- * public/brand/orion-constellation.png (and the .webp twin) and update width/height here —
- * nothing else in the page needs to change.
+ * Official constellation artwork and its responsive WebP variants.
  */
 export const portfolioConstellation = {
-  image: "/brand/orion-constellation.png" as string | null,
-  imageWebp: "/brand/orion-constellation.webp" as string | null,
-  mobileImage: null as string | null,
-  width: 1536,
-  height: 1024,
+  image: "/brand/orion-constellation-v2.png" as string | null,
+  imageWebp: "/brand/orion-constellation-v2.webp" as string | null,
+  mobileImage: "/brand/orion-constellation-v2-720.webp" as string | null,
+  width: 1295,
+  height: 774,
   alt: "Constelação oficial da Orion com as marcas Atual Pet, +Dog, Dez Pet e Quality Pet",
 } as const;
 
@@ -20,6 +18,7 @@ export type PortfolioCategory = {
   description: string;
   application: string;
   image: string;
+  imageWebp?: string;
   imageSmall?: string;
   imageWidth: number;
   imageHeight: number;
@@ -34,11 +33,12 @@ export const portfolioCategories: PortfolioCategory[] = [
       "Soluções de higienização desenvolvidas para diferentes rotinas, tipos de pelagem, diluições e necessidades de uso profissional.",
     application:
       "A categoria reúne propostas para limpeza, neutralização, branqueamento, volume e cuidados direcionados.",
-    image: "/media/categories/shampoos-orion.webp",
-    imageSmall: "/media/categories/shampoos-orion-720.webp",
-    imageWidth: 1536,
-    imageHeight: 1024,
-    imageAlt: "Shampoos Dream Color em embalagens profissionais ao lado de produtos de condicionamento e perfumaria",
+    image: "/media/categories/shampoos-orion-portfolio-transparent.png",
+    imageWebp: "/media/categories/shampoos-orion-portfolio-transparent.webp",
+    imageSmall: "/media/categories/shampoos-orion-portfolio-transparent-720.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageAlt: "Seleção de shampoos das marcas da Orion em diferentes apresentações",
   },
   {
     id: "condicionadores",
@@ -47,62 +47,54 @@ export const portfolioCategories: PortfolioCategory[] = [
       "Formulações voltadas ao condicionamento, à maciez, ao desembaraço e ao acabamento da pelagem em diferentes contextos de cuidado.",
     application:
       "Volumes e apresentações atendem tanto aplicações prontas para uso quanto rotinas profissionais de maior escala.",
-    image: "/media/lines/zoom.webp",
-    imageSmall: "/media/lines/zoom-720.webp",
-    imageWidth: 1440,
-    imageHeight: 960,
-    imageAlt: "Shampoo e condicionadores Zoom em apresentações de 750 mililitros e 5 litros",
+    image: "/media/categories/condicionadores-orion-portfolio-transparent.png",
+    imageWebp: "/media/categories/condicionadores-orion-portfolio-transparent.webp",
+    imageSmall: "/media/categories/condicionadores-orion-portfolio-transparent-720.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageAlt: "Seleção de condicionadores das marcas da Orion em diferentes apresentações",
   },
   {
     id: "mascaras-tratamentos",
-    title: "Máscaras e Tratamentos",
+    title: "Máscaras",
     description:
       "Produtos de tratamento articulam hidratação, textura, sensorial e desempenho para complementar protocolos de cuidado da pelagem.",
     application:
       "O desenvolvimento considera a experiência de aplicação e o resultado pretendido por cada proposta de linha.",
-    image: "/media/lines/the-luxe.webp",
-    imageSmall: "/media/lines/the-luxe-720.webp",
-    imageWidth: 1440,
-    imageHeight: 960,
-    imageAlt: "Máscara, shampoo, condicionador, colônia e finalizadores da linha The Luxe",
-  },
-  {
-    id: "finalizadores",
-    title: "Finalizadores",
-    description:
-      "Soluções de acabamento ampliam a experiência do cuidado com propostas para textura, volume, brilho e finalização da pelagem.",
-    application:
-      "Formatos em spray, leave-in e fluido permitem ajustar uso, aplicação e linguagem visual ao projeto.",
-    image: "/media/lines/dream-color-care.webp",
-    imageSmall: "/media/lines/dream-color-care-720.webp",
-    imageWidth: 1440,
-    imageHeight: 960,
-    imageAlt: "Spray de volume e shampoos Dream Color Care para cuidados específicos",
+    image: "/media/categories/mascaras-orion-portfolio-transparent.png",
+    imageWebp: "/media/categories/mascaras-orion-portfolio-transparent.webp",
+    imageSmall: "/media/categories/mascaras-orion-portfolio-transparent-720.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageAlt: "Seleção de máscaras das marcas da Orion em diferentes apresentações",
   },
   {
     id: "perfumes-colonias",
-    title: "Perfumes e Colônias",
+    title: "Perfumes",
     description:
       "A perfumaria pet conecta direção olfativa, identidade de marca e apresentação para prolongar a experiência após o cuidado.",
     application:
       "Diferentes fragrâncias, formatos e volumes mostram possibilidades de posicionamento e aplicação sem estabelecer hierarquia de qualidade.",
-    image: "/media/lines/vanity-pet.webp",
-    imageSmall: "/media/lines/vanity-pet-720.webp",
-    imageWidth: 1440,
-    imageHeight: 960,
-    imageAlt: "Colônias Vanity Pet em frascos de 50 e 500 mililitros",
+    image: "/media/categories/perfumes-orion-portfolio-transparent.png",
+    imageWebp: "/media/categories/perfumes-orion-portfolio-transparent.webp",
+    imageSmall: "/media/categories/perfumes-orion-portfolio-transparent-720.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageAlt: "Seleção de perfumes e colônias das marcas da Orion em diferentes apresentações",
   },
   {
     id: "cuidados-especificos",
-    title: "Cuidados Específicos",
+    title: "Cuidados Especiais",
     description:
       "Propostas direcionadas atendem necessidades particulares de pelagem, pele sensível, volume e rotina diária de cães e gatos.",
     application:
       "A categoria demonstra como formulação, forma de uso e comunicação podem partir de uma necessidade bem definida.",
-    image: "/brand/atualpet-products/dream-color-care.webp",
-    imageWidth: 1080,
-    imageHeight: 1080,
-    imageAlt: "Duas apresentações reais do Shampoo Própolis Dream Color Care",
+    image: "/media/categories/cuidados-especiais-orion-portfolio-transparent.png",
+    imageWebp: "/media/categories/cuidados-especiais-orion-portfolio-transparent.webp",
+    imageSmall: "/media/categories/cuidados-especiais-orion-portfolio-transparent-720.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageAlt: "Seleção de produtos de cuidados especiais das marcas da Orion",
   },
 ];
 
