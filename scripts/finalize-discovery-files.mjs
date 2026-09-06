@@ -1,4 +1,6 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
+
+const siteConfig = JSON.parse(await readFile(new URL("../site.config.json", import.meta.url), "utf8"));
 
 const routes = [
   "/",
@@ -6,16 +8,16 @@ const routes = [
   "/portfolio",
   "/terceirizacao",
   "/faq",
+  "/contato",
+  "/politica-de-privacidade",
+  "/politica-de-cookies",
 ];
 
 const configuredSiteUrl = process.env.VITE_SITE_URL?.trim();
 const vercelProductionHost = process.env.VITE_VERCEL_PROJECT_PRODUCTION_URL?.trim();
-const candidate = configuredSiteUrl || vercelProductionHost;
-
-if (!candidate) {
-  console.log("Discovery files kept with relative paths because no production domain is configured.");
-  process.exit(0);
-}
+// The official domain is the default so the built sitemap and robots always carry
+// absolute URLs; an env var only overrides it for preview deployments.
+const candidate = configuredSiteUrl || vercelProductionHost || siteConfig.siteUrl;
 
 const withProtocol = /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate}`;
 const parsedOrigin = new URL(withProtocol);

@@ -4,13 +4,13 @@ import { methodStages } from "../data/site";
 export function OrionProcess() {
   const [activeIndex, setActiveIndex] = useState(0);
   const desktopStepRefs = useRef<(HTMLElement | null)[]>([]);
-  const mobileStepRefs = useRef<(HTMLElement | null)[]>([]);
   const active = methodStages[activeIndex];
   const progress = methodStages.length > 1 ? (activeIndex / (methodStages.length - 1)) * 100 : 0;
 
+  // Only the desktop column swaps a pinned photo. Mobile reads the stages in plain
+  // document flow, so it needs no observer and nothing holds the viewport there.
   useEffect(() => {
-    const observedSteps = [desktopStepRefs.current, mobileStepRefs.current];
-    const observers = observedSteps.flatMap((steps) => steps.map((step, index) => {
+    const observers = desktopStepRefs.current.map((step, index) => {
       if (!step) return null;
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -20,7 +20,7 @@ export function OrionProcess() {
       );
       observer.observe(step);
       return observer;
-    }));
+    });
     return () => observers.forEach((observer) => observer?.disconnect());
   }, []);
 
@@ -75,44 +75,29 @@ export function OrionProcess() {
         </figure>
       </div>
 
-      <div className="container method-scroll-mobile" style={{ "--method-progress": `${progress}%` } as React.CSSProperties}>
-        <div className="method-mobile-stage">
-          <div className="method-mobile-sticky">
-            <figure className="method-mobile-media" key={`mobile-${active.image}`}>
-              <img src={active.imageSmall} width="720" height="480" alt={active.alt} loading="lazy" decoding="async" sizes="100vw" style={{ objectPosition: active.imagePosition }} />
-              <figcaption>
-                <strong>{active.title}</strong>
-                <span>{active.detail}</span>
-              </figcaption>
-            </figure>
-            <div className="method-mobile-active-copy" aria-live="polite">
-              <h3>{active.title}</h3>
-              <p>{active.description}</p>
-              <small>{active.detail}</small>
-            </div>
-          </div>
-
-          <div className="method-mobile-triggers" aria-hidden="true">
-            {methodStages.map((step, index) => (
-              <div
-                className="method-mobile-trigger"
-                ref={(node) => { mobileStepRefs.current[index] = node; }}
-                key={step.title}
+      {/* Mobile reads the same stages as ordinary document flow — no sticky, no pinning,
+          no scroll-driven swap. Every stage carries its own photo and copy. */}
+      <ol className="container method-scroll-mobile" aria-label="Etapas do Método Orion">
+        {methodStages.map((step) => (
+          <li className="method-mobile-entry" key={step.title}>
+            <figure className="method-mobile-media">
+              <img
+                src={step.imageSmall}
+                width="720"
+                height="480"
+                alt={step.alt}
+                loading="lazy"
+                decoding="async"
+                sizes="100vw"
+                style={{ objectPosition: step.imagePosition }}
               />
-            ))}
-          </div>
-
-          <ol className="sr-only" aria-label="Etapas do Método Orion">
-            {methodStages.map((step) => (
-              <li key={`accessible-${step.title}`}>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-                <small>{step.detail}</small>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+            </figure>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+            <small>{step.detail}</small>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

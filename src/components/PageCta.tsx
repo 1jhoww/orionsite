@@ -11,7 +11,7 @@ export function PageCta({ title, text = "Conte à Orion o que sua marca precisa 
         </Reveal>
         <Reveal delay={80}>
           <p>{text}</p>
-          <OrionButton href="mailto:administrativo@orionpet.com.br" variant="light">Falar com a Orion</OrionButton>
+          <OrionButton href="/contato" variant="light">Falar com a Orion</OrionButton>
         </Reveal>
       </div>
     </section>

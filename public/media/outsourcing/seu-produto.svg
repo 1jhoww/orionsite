@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520">
+<rect width="640" height="520" fill="none"/>
+<g fill="none" stroke="#0B6186" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="320" cy="225" r="178" stroke="#8CCDE6" stroke-width="4"/>
+<path d="M144 188h124v188H144z" fill="white"/>
+<path d="M169 156h74v32h-74z" fill="white"/>
+<path d="M183 128h46v28h-46z" fill="white"/>
+<path d="M204 128v-27h71c22 0 35 12 35 26 0 15-13 25-34 25h-23"/>
+<path d="M320 173h111l-12 203H332z" fill="white"/>
+<path d="M340 198h73"/>
+<path d="M450 252h126v124H450z" fill="white"/>
+<path d="M470 224h86v28h-86z" fill="white"/>
+<path d="M185 255h42M185 294h42M359 255h36M359 294h36M486 307h54"/>
+<path d="M109 393h422" stroke="#8CCDE6" stroke-width="4"/>
+</g>
+<g fill="#073E56" font-family="Arial, Helvetica, sans-serif">
+<text x="320" y="454" text-anchor="middle" font-size="42" font-weight="700">SEU PRODUTO</text>
+<text x="320" y="486" text-anchor="middle" font-size="17">Formulação e apresentação construídas para a sua marca.</text>
+<text x="320" y="512" text-anchor="middle" font-size="15" font-weight="700" fill="#0B6186">LIBERDADE DE EMBALAGEM</text>
+</g></svg>

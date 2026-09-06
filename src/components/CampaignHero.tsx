@@ -21,12 +21,12 @@ const heroSlides = [
     position: "50% 45%",
   },
   {
-    image: "/media/company/history-current-factory.webp",
-    imageSmall: "/media/company/history-current-factory-720.webp",
+    image: "/media/factory/estoque-materias-primas-orion-v2.webp",
+    imageSmall: "/media/factory/estoque-materias-primas-orion-v2-720.webp",
     width: 1440,
     height: 2160,
-    alt: "Estrutura atual da fábrica Orion em operação",
-    position: "50% 48%",
+    alt: "Matérias-primas organizadas na área de armazenamento da Orion",
+    position: "50% 46%",
   },
   {
     image: "/media/factory/envase-orion-v2.webp",
@@ -43,13 +43,13 @@ export function CampaignHero() {
   const loadedSlides = useRef(new Set<number>());
 
   useEffect(() => {
-    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     let rotationTimer: number | undefined;
 
     const syncRotation = () => {
       if (rotationTimer !== undefined) window.clearInterval(rotationTimer);
 
-      if (motionPreference.matches) {
+      if (motionPreference?.matches) {
         setActiveSlide(0);
         rotationTimer = undefined;
         return;
@@ -68,11 +68,11 @@ export function CampaignHero() {
     };
 
     syncRotation();
-    motionPreference.addEventListener?.("change", syncRotation);
+    motionPreference?.addEventListener?.("change", syncRotation);
 
     return () => {
       if (rotationTimer !== undefined) window.clearInterval(rotationTimer);
-      motionPreference.removeEventListener?.("change", syncRotation);
+      motionPreference?.removeEventListener?.("change", syncRotation);
     };
   }, []);
 
@@ -90,7 +90,7 @@ export function CampaignHero() {
           </p>
           <div className="industrial-hero-actions">
             <OrionButton href="#solucoes">Conheça nossas soluções</OrionButton>
-            <OrionButton href="#contato" variant="secondary">Fale com a Orion</OrionButton>
+            <OrionButton href="/contato" variant="secondary">Fale com a Orion</OrionButton>
           </div>
         </div>
 
@@ -98,7 +98,6 @@ export function CampaignHero() {
           {heroSlides.map((slide, index) => (
             <picture
               className={`industrial-hero-slide ${index === activeSlide ? "is-active" : ""}`}
-              aria-hidden={index !== activeSlide}
               key={slide.image}
             >
               <source media="(max-width: 820px)" srcSet={slide.imageSmall} />
@@ -106,7 +105,7 @@ export function CampaignHero() {
                 src={slide.image}
                 width={slide.width}
                 height={slide.height}
-                alt={slide.alt}
+                alt={index === activeSlide ? slide.alt : ""}
                 fetchPriority={index === 0 ? "high" : "low"}
                 loading="eager"
                 decoding="async"

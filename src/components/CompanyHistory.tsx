@@ -1,5 +1,4 @@
 import {
-  useEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -12,217 +11,182 @@ type CompanyHistoryProps = {
   items?: CompanyHistoryItem[];
 };
 
+type Direction = "next" | "previous";
+
+type DragState = {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  deltaX: number;
+  horizontal: boolean;
+};
+
+const AXIS_LOCK_DISTANCE = 10;
+const SWIPE_THRESHOLD = 48;
+
 export function CompanyHistory({ items = companyHistory }: CompanyHistoryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const scrollFrameRef = useRef<number | null>(null);
-  const dragRef = useRef({ active: false, startX: 0, startScrollLeft: 0 });
-
-  useEffect(() => () => {
-    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
-  }, []);
+  const [direction, setDirection] = useState<Direction>("next");
+  const dragRef = useRef<DragState | null>(null);
 
   if (items.length === 0) return null;
 
   const safeIndex = Math.min(activeIndex, items.length - 1);
-  const progress = items.length > 1 ? ((safeIndex + 1) / items.length) * 100 : 100;
+  const activeItem = items[safeIndex];
 
-  const scrollToItem = (index: number, focusTab = false) => {
+  const goTo = (index: number) => {
     const nextIndex = Math.max(0, Math.min(index, items.length - 1));
-    const track = trackRef.current;
-    const card = cardRefs.current[nextIndex];
+    if (nextIndex === safeIndex) return;
+
+    setDirection(nextIndex > safeIndex ? "next" : "previous");
     setActiveIndex(nextIndex);
-
-    if (track && card && typeof track.scrollTo === "function") {
-      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-      const left = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
-      track.scrollTo({ left, behavior: reducedMotion ? "auto" : "smooth" });
-    }
-
-    if (focusTab) {
-      window.requestAnimationFrame(() => tabRefs.current[nextIndex]?.focus());
-    }
   };
 
-  const handleTimelineKeys = (event: KeyboardEvent<HTMLDivElement>) => {
+  const handleNavigationKeys = (event: KeyboardEvent<HTMLDivElement>) => {
     let nextIndex: number | null = null;
-    if (event.key === "ArrowRight") nextIndex = Math.min(safeIndex + 1, items.length - 1);
-    else if (event.key === "ArrowLeft") nextIndex = Math.max(safeIndex - 1, 0);
+    if (event.key === "ArrowRight") nextIndex = safeIndex + 1;
+    else if (event.key === "ArrowLeft") nextIndex = safeIndex - 1;
     else if (event.key === "Home") nextIndex = 0;
     else if (event.key === "End") nextIndex = items.length - 1;
 
     if (nextIndex === null) return;
     event.preventDefault();
-    scrollToItem(nextIndex, true);
-  };
-
-  const updateActiveFromScroll = () => {
-    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
-    scrollFrameRef.current = window.requestAnimationFrame(() => {
-      const track = trackRef.current;
-      if (!track) return;
-      const trackCenter = track.scrollLeft + track.clientWidth / 2;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      cardRefs.current.forEach((card, index) => {
-        if (!card) return;
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const distance = Math.abs(cardCenter - trackCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      setActiveIndex(closestIndex);
-    });
+    goTo(nextIndex);
   };
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    if (event.button !== 0 || (event.target as Element).closest("button")) return;
+
     dragRef.current = {
-      active: true,
+      pointerId: event.pointerId,
       startX: event.clientX,
-      startScrollLeft: event.currentTarget.scrollLeft,
+      startY: event.clientY,
+      deltaX: 0,
+      horizontal: false,
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
-    event.currentTarget.classList.add("is-dragging");
+    event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.active) return;
-    const distance = event.clientX - dragRef.current.startX;
-    if (Math.abs(distance) > 3) event.preventDefault();
-    event.currentTarget.scrollLeft = dragRef.current.startScrollLeft - distance;
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.startX;
+    const deltaY = event.clientY - drag.startY;
+    drag.deltaX = deltaX;
+
+    if (!drag.horizontal && Math.abs(deltaX) >= AXIS_LOCK_DISTANCE && Math.abs(deltaX) > Math.abs(deltaY)) {
+      drag.horizontal = true;
+      event.currentTarget.dataset.dragging = "true";
+    }
+
+    if (drag.horizontal) event.preventDefault();
   };
 
-  const endPointerDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.active) return;
-    dragRef.current.active = false;
-    event.currentTarget.classList.remove("is-dragging");
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+  const finishPointerGesture = (event: ReactPointerEvent<HTMLDivElement>, cancelled = false) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    dragRef.current = null;
+    delete event.currentTarget.dataset.dragging;
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
+
+    if (cancelled || !drag.horizontal || Math.abs(drag.deltaX) < SWIPE_THRESHOLD) return;
+    goTo(drag.deltaX < 0 ? safeIndex + 1 : safeIndex - 1);
   };
 
   return (
-    <Reveal as="section" className="company-history" aria-labelledby="company-history-title">
-      <div className="container company-history-heading">
-        <div>
-          <p className="eyebrow">Como tudo começou</p>
-          <h2 id="company-history-title">Uma história construída passo a passo.</h2>
-        </div>
-        <p className="company-history-instruction">Arraste ou use as setas para navegar.</p>
-      </div>
+    <section className="company-history" id="linha-do-tempo" aria-labelledby="company-history-title">
+      <div className="container">
+        <Reveal className="company-history-heading">
+          <h2 id="company-history-title">Uma estrutura construída para crescer.</h2>
+        </Reveal>
 
-      <div
-        className="container company-history-tabs"
-        role="tablist"
-        aria-label="Marcos da história da Orion"
-        aria-orientation="horizontal"
-        tabIndex={-1}
-        onKeyDown={handleTimelineKeys}
-      >
-        {items.map((item, index) => (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={index === safeIndex}
-            aria-controls={`company-history-panel-${index}`}
-            id={`company-history-tab-${index}`}
-            tabIndex={index === safeIndex ? 0 : -1}
-            ref={(node) => { tabRefs.current[index] = node; }}
-            onClick={() => scrollToItem(index)}
-            key={`${item.period}-${item.title}`}
-          >
-            <span>{item.period}</span>
-            <small>{item.title}</small>
-          </button>
-        ))}
-      </div>
-
-      <div className="company-history-stage">
         <div
-          className="container company-history-track"
-          ref={trackRef}
-          onScroll={updateActiveFromScroll}
+          className="company-history-stage"
+          role="group"
+          aria-label="Palco da história da Orion"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
-          onPointerUp={endPointerDrag}
-          onPointerCancel={endPointerDrag}
-          aria-label="Linha do tempo da Orion"
+          onPointerUp={(event) => finishPointerGesture(event)}
+          onPointerCancel={(event) => finishPointerGesture(event, true)}
         >
-          {items.map((item, index) => (
-            <article
-              className={`company-history-card ${index === safeIndex ? "is-active" : ""}`}
-              id={`company-history-panel-${index}`}
-              role="tabpanel"
-              aria-labelledby={`company-history-tab-${index}`}
-              aria-current={index === safeIndex ? "step" : undefined}
-              ref={(node) => { cardRefs.current[index] = node; }}
-              key={`${item.period}-${item.image}`}
-            >
-              <figure>
-                <picture>
-                  <source media="(max-width: 720px)" srcSet={item.imageSmall} />
-                  <img
-                    src={item.image}
-                    alt={item.imageAlt}
-                    width={item.imageWidth}
-                    height={item.imageHeight}
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                    style={{ objectPosition: item.imagePosition }}
-                  />
-                </picture>
-              </figure>
-              <div className="company-history-copy">
-                <span>{item.period}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="company-history-arrows" role="group" aria-label="Navegação da história">
-          <button
-            type="button"
-            aria-label="Ver marco anterior da história"
-            onClick={() => scrollToItem(safeIndex - 1)}
-            disabled={safeIndex === 0}
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-          <button
-            type="button"
-            aria-label="Ver próximo marco da história"
-            onClick={() => scrollToItem(safeIndex + 1)}
-            disabled={safeIndex === items.length - 1}
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="container company-history-controls">
-        <div className="company-history-progress">
-          <span aria-live="polite">Marco {safeIndex + 1} de {items.length}</span>
           <div
-            role="progressbar"
-            aria-label="Progresso na história da Orion"
-            aria-valuemin={1}
-            aria-valuemax={items.length}
-            aria-valuenow={safeIndex + 1}
+            className="company-history-panel"
+            key={`${activeItem.period}-${activeItem.title}`}
+            data-direction={direction}
+            role="group"
+            aria-roledescription="marco da história"
+            aria-label={`${safeIndex + 1} de ${items.length}: ${activeItem.period}`}
+            aria-live="polite"
+            aria-atomic="true"
           >
-            <i style={{ width: `${progress}%` }} />
+            <figure className="company-history-media">
+              <picture>
+                <source media="(max-width: 720px)" srcSet={activeItem.imageSmall} />
+                <img
+                  src={activeItem.image}
+                  alt={activeItem.imageAlt}
+                  width={activeItem.imageWidth}
+                  height={activeItem.imageHeight}
+                  decoding="async"
+                  draggable="false"
+                  style={{ objectPosition: activeItem.imagePosition }}
+                />
+              </picture>
+            </figure>
+
+            <div className="company-history-copy">
+              <span className="company-history-period">{activeItem.period}</span>
+              <h3>{activeItem.title}</h3>
+              <p>{activeItem.description}</p>
+            </div>
+          </div>
+
+          <div
+            className="company-history-navigation"
+            role="toolbar"
+            aria-label="Navegação dos marcos da história"
+            onKeyDown={handleNavigationKeys}
+          >
+            <button
+              className="company-history-arrow"
+              type="button"
+              aria-label="Ver marco anterior da história"
+              onClick={() => goTo(safeIndex - 1)}
+              disabled={safeIndex === 0}
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+
+            <div className="company-history-indicators" role="group" aria-label="Escolher marco da história">
+              {items.map((item, index) => (
+                <button
+                  type="button"
+                  aria-label={`Ver marco: ${item.period}`}
+                  aria-current={index === safeIndex ? "step" : undefined}
+                  onClick={() => goTo(index)}
+                  key={`${item.period}-${item.title}`}
+                >
+                  <span aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+
+            <button
+              className="company-history-arrow"
+              type="button"
+              aria-label="Ver próximo marco da história"
+              onClick={() => goTo(safeIndex + 1)}
+              disabled={safeIndex === items.length - 1}
+            >
+              <span aria-hidden="true">→</span>
+            </button>
           </div>
         </div>
       </div>
-    </Reveal>
+    </section>
   );
 }

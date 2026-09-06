@@ -3,17 +3,19 @@ import { InternalHero } from "../components/InternalHero";
 import { PageCta } from "../components/PageCta";
 import { Reveal } from "../components/Reveal";
 import { Seo } from "../components/Seo";
+import { FaqPageJsonLd } from "../components/StructuredData";
 import { faqItems } from "../data/site";
 
 export default function FaqPage() {
   return (
     <>
       <Seo
-        title="Perguntas frequentes | Orion"
-        description="Respostas institucionais sobre a atuação, o processo, o portfólio e o contato com a Orion."
+        title="Perguntas Frequentes | Orion Cosméticos Pet"
+        description="Respostas sobre terceirização, desenvolvimento, produção e o processo de projeto da Orion, indústria de cosméticos pet."
         path="/faq"
         ogDescription="O essencial sobre a atuação e o processo de parceria da Orion."
       />
+      <FaqPageJsonLd items={faqItems} />
       <main id="conteudo" className="internal-page faq-page">
       <InternalHero
         compact

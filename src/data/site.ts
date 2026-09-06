@@ -322,3 +322,29 @@ export const faqItems: FaqItem[] = [
       "Os canais institucionais disponíveis são administrativo@orionpet.com.br e o WhatsApp (11) 96232-0441.",
   },
 ];
+
+/** Registered address and channels — the single source for the Home location block,
+ *  the contact page and the Organization schema, so they can never drift apart. */
+export const orionCompany = {
+  legalName: "Orion Ind e Com de Cosmeticos LTDA",
+  street: "Rua Hawai, 77",
+  district: "Jardim Margarida",
+  city: "Vargem Grande Paulista",
+  state: "SP",
+  postalCode: "06739-064",
+  country: "BR",
+  email: "administrativo@orionpet.com.br",
+  phone: "(11) 96232-0441",
+  phoneHref: "tel:+5511962320441",
+} as const;
+
+export const orionAddressLine = `${orionCompany.street} — ${orionCompany.district}, ${orionCompany.city} — ${orionCompany.state}, ${orionCompany.postalCode}`;
+
+/** Embed URL built from the confirmed address; no coordinates are invented. */
+export const orionMapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
+  `${orionCompany.street}, ${orionCompany.district}, ${orionCompany.city} - ${orionCompany.state}, ${orionCompany.postalCode}`,
+)}&output=embed`;
+
+export const orionMapDirectionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${orionCompany.street}, ${orionCompany.district}, ${orionCompany.city} - ${orionCompany.state}, ${orionCompany.postalCode}`,
+)}`;

@@ -24,7 +24,7 @@ export function OutsourcingTeaser() {
             Desenvolvimento, documentação, identidade visual, fabricação e envase podem
             avançar em uma mesma direção, conforme o escopo de cada projeto.
           </p>
-          <OrionButton href="/terceirizacao">Conheça o processo</OrionButton>
+          <OrionButton href="/terceirizacao">Conheça a terceirização de cosméticos pet</OrionButton>
         </Reveal>
       </div>
     </section>

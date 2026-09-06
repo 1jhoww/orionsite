@@ -1,4 +1,4 @@
-import { InternalHero } from "../components/InternalHero";
+import { OutsourcingHero } from "../components/OutsourcingHero";
 import { OutsourcingTimeline } from "../components/OutsourcingTimeline";
 import { PageCta } from "../components/PageCta";
 import { Reveal } from "../components/Reveal";
@@ -8,23 +8,14 @@ export default function OutsourcingPage() {
   return (
     <>
       <Seo
-        title="Terceirização para o mercado pet | Orion"
-        description="Do briefing à entrega: conheça as etapas técnicas e comerciais da terceirização Orion para desenvolvimento e produção de cosméticos pet."
+        title="Terceirização de Cosméticos Pet | Orion"
+        description="Terceirização de cosméticos pet com desenvolvimento técnico, formulações exclusivas, produção, envase e entrega para marcas do mercado pet."
         path="/terceirizacao"
         ogDescription="Da direção de marca ao produto final em uma operação conectada."
         imageAlt="Processo industrial Orion"
       />
       <main id="conteudo" className="internal-page outsourcing-page">
-      <InternalHero
-        eyebrow="Terceirização"
-        title="Do briefing à produção, etapas coordenadas pela Orion."
-        description="O projeto avança por definições comerciais, desenvolvimento técnico, preparação documental e execução industrial até a entrega."
-        image="/media/hero-fragrance.webp"
-        imageSmall="/media/hero-fragrance-800.webp"
-        imageWidth={1600}
-        imageHeight={2400}
-        imageAlt="Medição de uma formulação durante o desenvolvimento olfativo"
-      />
+      <OutsourcingHero />
 
       <OutsourcingTimeline />
 

@@ -1,7 +1,10 @@
 import { brands } from "../data/site";
 import { Link } from "react-router-dom";
+import { useCookieConsent } from "./CookieConsentContext";
 
 export function SiteFooter() {
+  const { openPreferences } = useCookieConsent();
+
   return (
     <footer className="footer">
       <div className="container footer-main">
@@ -29,14 +32,42 @@ export function SiteFooter() {
             <Link to="/portfolio">Portfólio</Link>
             <Link to="/terceirizacao">Terceirização</Link>
             <Link to="/faq">FAQ</Link>
-            <Link to="/#contato">Contato</Link>
+            <Link to="/contato">Contato</Link>
           </nav>
         </div>
       </div>
+      <div className="footer-legal">
+        <div className="container footer-legal-inner">
+          <nav aria-label="Políticas e preferências">
+            <Link to="/politica-de-privacidade">Política de Privacidade</Link>
+            <Link to="/politica-de-cookies">Política de Cookies</Link>
+            <button onClick={openPreferences} type="button">Preferências de cookies</button>
+          </nav>
+        </div>
+      </div>
+
       <div className="footer-base">
         <div className="container">
           <span>© Orion {new Date().getFullYear()}. Todos os direitos reservados.</span>
-          <span>Indústria de soluções para o mercado pet</span>
+          <span className="footer-credit" aria-label="Créditos de desenvolvimento">
+            <span className="footer-credit-label">Desenvolvido por</span>
+            <a
+              className="footer-credit-logo"
+              href="https://www.heptastudios.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Site oficial da Hepta Studios"
+            >
+              <img
+                src="/brand/hepta-studios.png"
+                alt=""
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          </span>
         </div>
       </div>
     </footer>

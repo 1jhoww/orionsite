@@ -10,7 +10,7 @@ export default function PortfolioPage() {
   return (
     <>
       <Seo
-        title="Portfólio industrial de cosméticos pet | Orion"
+        title="Portfólio de Cosméticos Pet | Orion"
         description="Conheça categorias de cosméticos pet desenvolvidas e fabricadas pela Orion, com shampoos, condicionadores, máscaras, perfumes e cuidados especiais."
         path="/portfolio"
         ogDescription="Produtos reais organizados por categoria mostram a amplitude de desenvolvimento e fabricação da Orion."

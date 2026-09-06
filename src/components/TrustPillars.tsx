@@ -49,22 +49,18 @@ export function TrustPillars() {
           </p>
         </Reveal>
 
-        <ol className="trust-flow" aria-label="Etapas integradas da capacidade industrial Orion">
+        {/* An unordered list on purpose: these capabilities coexist, they are not a sequence. */}
+        <ul className="trust-capabilities" aria-label="Capacidades que compõem a operação Orion">
           {pillars.map((pillar, index) => (
-            <Reveal as="li" className="trust-stage" delay={index * 45} key={pillar.title}>
-              <span className="trust-stage-marker" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
+            <Reveal as="li" className="trust-capability" delay={index * 45} key={pillar.title}>
+              <span className="trust-capability-icon trust-point-icon" aria-hidden="true">
+                <CapabilityIcon name={pillar.icon} />
               </span>
-              <div className="trust-stage-copy">
-                <span className="trust-stage-icon trust-point-icon" aria-hidden="true">
-                  <CapabilityIcon name={pillar.icon} />
-                </span>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.description}</p>
-              </div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.description}</p>
             </Reveal>
           ))}
-        </ol>
+        </ul>
       </div>
     </section>
   );

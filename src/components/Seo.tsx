@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import siteConfig from "../../site.config.json";
 
 export type SeoConfig = {
   title: string;
@@ -16,15 +17,22 @@ export type SeoConfig = {
 
 const defaultImage = "/og.png";
 
+export const SITE_NAME = siteConfig.siteName;
+
+/**
+ * Canonical and social URLs have to be absolute and stable, so the official domain in
+ * site.config.json is the default — the previous fallback to window.location.origin
+ * stamped whatever host rendered the page. An env var still wins, for preview deploys.
+ */
 export function getSiteOrigin() {
   const configuredOrigin = import.meta.env.VITE_SITE_URL?.trim();
   const vercelProductionHost = import.meta.env.VITE_VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  const candidate = configuredOrigin || (vercelProductionHost ? `https://${vercelProductionHost}` : window.location.origin);
+  const candidate = configuredOrigin || (vercelProductionHost ? `https://${vercelProductionHost}` : siteConfig.siteUrl);
 
   try {
     return new URL(candidate).origin;
   } catch {
-    return window.location.origin;
+    return new URL(siteConfig.siteUrl).origin;
   }
 }
 
@@ -57,6 +65,7 @@ export function Seo({
 
       <meta property="og:type" content="website" />
       <meta property="og:locale" content="pt_BR" />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:title" content={ogTitle} />
       <meta property="og:description" content={ogDescription} />
       <meta property="og:url" content={canonical} />
@@ -69,6 +78,7 @@ export function Seo({
       <meta name="twitter:title" content={ogTitle} />
       <meta name="twitter:description" content={ogDescription} />
       <meta name="twitter:image" content={imageUrl} />
+      <meta name="twitter:image:alt" content={imageAlt} />
     </Helmet>
   );
 }

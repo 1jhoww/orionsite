@@ -99,7 +99,7 @@ export function Header() {
           {links.map(({ label, href, match }) => (
             <Link key={href} to={href} aria-current={match(pathname) ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>
           ))}
-          <Link className="header-cta" to="/#contato" onClick={() => setOpen(false)}>Contato</Link>
+          <Link className="header-cta" to="/contato" onClick={() => setOpen(false)}>Contato</Link>
         </nav>
       </div>
       <ScrollProgress />
