@@ -757,7 +757,7 @@ describe("Orion institutional SPA", () => {
     expect(credit.getAttribute("target")).toBe("_blank");
     expect(credit.getAttribute("rel")).toBe("noopener noreferrer");
     expect(credit.getAttribute("aria-label")).toBe("Site oficial da Hepta Studios");
-    expect(credit.querySelector("img")?.getAttribute("src")).toBe("/brand/hepta-studios.png");
+    expect(credit.querySelector("img")?.getAttribute("src")).toBe("/brand/hepta-studios.webp");
     expect(credit.querySelector("img")?.getAttribute("alt")).toBe("");
   });
 

@@ -59,10 +59,10 @@ export function SiteFooter() {
               aria-label="Site oficial da Hepta Studios"
             >
               <img
-                src="/brand/hepta-studios.png"
+                src="/brand/hepta-studios.webp"
                 alt=""
-                width="1536"
-                height="1024"
+                width="400"
+                height="267"
                 loading="lazy"
                 decoding="async"
               />
