@@ -9614,6 +9614,7 @@ not inside a column ----------------- */
 /* --- 27. Terceirização — step carousel driven by scroll gestures -------- */
 
 .outsourcing-scroll-hero {
+  --carousel-art-height: clamp(180px, 32svh, 330px);
   --carousel-shift: clamp(230px, 22vw, 330px);
   --carousel-exit: clamp(420px, 44vw, 620px);
   --carousel-nudge: clamp(0px, 2.2vw, 32px);
@@ -9622,8 +9623,7 @@ not inside a column ----------------- */
   --carousel-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --carousel-duration: 560ms;
   position: relative;
-  height: calc(100svh - var(--header-h));
-  min-height: 520px;
+  min-height: max(520px, calc(100svh - var(--header-h)));
   display: flex;
   overflow: clip;
   color: var(--ink);
@@ -9633,8 +9633,8 @@ not inside a column ----------------- */
 .outsourcing-scroll-hero-layout {
   display: grid;
   width: var(--container);
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
-  align-content: stretch;
+  grid-template-rows: repeat(4, auto);
+  align-content: center;
   justify-items: center;
   padding-block: clamp(18px, 2.6svh, 30px) clamp(16px, 2.4svh, 26px);
   text-align: center;
@@ -9669,15 +9669,16 @@ not inside a column ----------------- */
 /* --- carousel track ----------------------------------------------------- */
 
 .outsourcing-scroll-hero-track {
-  position: relative;
+  /* Shared grid cell preserves the carousel while reserving real image height. */
+  display: grid;
   width: 100%;
-  min-height: 0;
+  min-width: 0;
   margin-top: clamp(10px, 2svh, 22px);
 }
 
 .outsourcing-scroll-hero-slide {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
+  min-width: 0;
   display: grid;
   place-items: center;
   opacity: var(--carousel-aside-opacity);
@@ -9688,10 +9689,14 @@ not inside a column ----------------- */
 }
 
 .outsourcing-scroll-hero-slide img {
-  width: auto;
-  height: clamp(200px, 42svh, 430px);
-  max-width: min(100%, 660px);
+  width: min(100%, calc(var(--carousel-art-height) * 1.5));
+  height: auto;
+  aspect-ratio: 3 / 2;
   object-fit: contain;
+}
+
+.outsourcing-scroll-hero-slide[data-stage="product"] img {
+  width: min(86%, calc(var(--carousel-art-height) * 1.29));
 }
 
 .outsourcing-scroll-hero-slide[data-offset="0"] {
@@ -9734,8 +9739,8 @@ still in the DOM so no remount flicker. */
 
 .outsourcing-scroll-hero-message {
   max-width: 560px;
-  min-height: clamp(132px, 18.5svh, 166px);
-  margin-top: clamp(8px, 1.6svh, 18px);
+  min-height: 10rem;
+  margin-top: clamp(16px, 2.4svh, 24px);
   animation: outsourcing-stage-copy-in 340ms var(--carousel-ease) both;
 }
 
@@ -9853,6 +9858,24 @@ still in the DOM so no remount flicker. */
   animation: none;
 }
 
+.outsourcing-scroll-hero-continuation {
+  display: grid;
+  place-items: center;
+  height: 18px;
+  margin-top: 14px;
+  color: var(--blue);
+  opacity: 0.6;
+}
+
+.outsourcing-scroll-hero-continuation svg {
+  animation: outsourcing-continuation-nudge 2600ms ease-in-out infinite;
+}
+
+@keyframes outsourcing-continuation-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
 @keyframes outsourcing-stage-copy-in {
   from {
     opacity: 0;
@@ -9887,25 +9910,20 @@ still in the DOM so no remount flicker. */
   }
 
   .outsourcing-scroll-hero-layout {
-    grid-template-rows: auto auto auto auto;
-    align-content: space-evenly;
     padding-block: clamp(14px, 2svh, 24px) clamp(14px, 2svh, 22px);
   }
 
   .outsourcing-scroll-hero-track {
-    height: clamp(200px, 27svh, 280px);
-    margin-top: 0;
+    margin-top: 16px;
   }
 
   .outsourcing-scroll-hero-slide img {
-    width: 80vw;
-    height: auto;
-    max-width: none;
+    max-width: 82vw;
   }
 
   .outsourcing-scroll-hero-message {
     max-width: 92vw;
-    min-height: clamp(130px, 20svh, 164px);
+    min-height: 11rem;
   }
 
   .outsourcing-scroll-hero-message h2 {
@@ -9943,8 +9961,8 @@ still in the DOM so no remount flicker. */
     font-size: 0.84rem;
   }
 
-  .outsourcing-scroll-hero-slide img {
-    width: 82vw;
+  .outsourcing-scroll-hero-message {
+    min-height: 13rem;
   }
 
   .outsourcing-scroll-hero-message h2 {
@@ -9982,7 +10000,8 @@ still in the DOM so no remount flicker. */
     animation-duration: 180ms;
   }
 
-  .outsourcing-scroll-hero-cue svg {
+  .outsourcing-scroll-hero-cue svg,
+  .outsourcing-scroll-hero-continuation svg {
     animation: none;
   }
 }

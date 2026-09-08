@@ -22,7 +22,14 @@ export default function OutsourcingPage() {
       <section className="outsourcing-scope" aria-labelledby="outsourcing-scope-title">
         <div className="container outsourcing-scope-layout">
           <Reveal as="figure">
-            <img src="/media/hero-perfume-lab.webp" width="2000" height="1333" alt="Frascos alinhados durante uma etapa de envase de perfumaria" loading="lazy" decoding="async" sizes="(max-width: 820px) 100vw, 46vw" />
+            <img
+              src="/media/hero-perfume-lab-1200.webp"
+              srcSet="/media/hero-perfume-lab-720.webp 720w, /media/hero-perfume-lab-1200.webp 1200w, /media/hero-perfume-lab.webp 2000w"
+              width="2000" height="1333"
+              alt="Frascos alinhados durante uma etapa de envase de perfumaria"
+              loading="lazy" decoding="async"
+              sizes="(max-width: 820px) max(705px, calc(100vw - 40px)), max(990px, 46vw)"
+            />
           </Reveal>
           <Reveal delay={70}>
             <p className="eyebrow">Escopo coordenado</p>

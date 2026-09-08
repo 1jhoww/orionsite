@@ -167,9 +167,15 @@ export function OutsourcingHero() {
             <picture
               className="outsourcing-scroll-hero-slide"
               data-offset={index - activeIndex}
+              data-stage={stage.id}
               key={stage.id}
             >
-              <source media="(max-width: 820px)" srcSet={stage.imageSmall} />
+              <source
+                srcSet={`${stage.imageSmall} 720w, ${stage.image} 1200w`}
+                sizes={stage.id === "product"
+                  ? "(max-width: 900px) min(70.52vw, 41.28svh, 426px), clamp(232px, 41.28svh, 426px)"
+                  : "(max-width: 900px) min(82vw, 48svh, 495px), clamp(270px, 48svh, 495px)"}
+              />
               <img
                 src={stage.image}
                 width="1200"
@@ -177,6 +183,7 @@ export function OutsourcingHero() {
                 alt=""
                 decoding="async"
                 loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "low"}
               />
             </picture>
           ))}
@@ -187,6 +194,13 @@ export function OutsourcingHero() {
           <p>{activeStage.text}</p>
           {activeStage.detail && <strong>{activeStage.detail}</strong>}
           {activeStage.detailText && <small>{activeStage.detailText}</small>}
+          {activeStage.id === "product" && (
+            <span className="outsourcing-scroll-hero-continuation" aria-hidden="true">
+              <svg fill="none" height="18" viewBox="0 0 20 20" width="20">
+                <path d="m5 7 5 5 5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+              </svg>
+            </span>
+          )}
         </div>
 
         <div className="outsourcing-scroll-hero-controls">

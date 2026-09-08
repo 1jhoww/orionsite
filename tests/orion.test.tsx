@@ -611,7 +611,7 @@ describe("Orion institutional SPA", () => {
     // The hero never traps the page: gestures are only captured while a stage remains in that direction.
     expect(heroSource).toMatch(/if \(!direction \|\| !isPinned\(\) \|\| !canStep\(direction\)\) return;/);
     expect(heroSource).not.toMatch(/scrollTo|scrollIntoView|190svh/);
-    expect(globalStyles).toMatch(/\.outsourcing-scroll-hero\s*\{[^}]*height:\s*calc\(100svh - var\(--header-h\)\)/s);
+    expect(globalStyles).toMatch(/\.outsourcing-scroll-hero\s*\{[^}]*min-height:\s*max\(520px, calc\(100svh - var\(--header-h\)\)\)/s);
     expect(globalStyles).not.toMatch(/\.outsourcing-scroll-hero-stage/);
     expect(globalStyles).toMatch(/\.outsourcing-scroll-hero-slide\[data-offset="0"\]/);
     expect(globalStyles).toMatch(/--carousel-duration: 560ms/);

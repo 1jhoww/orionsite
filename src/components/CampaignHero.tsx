@@ -41,6 +41,28 @@ const heroSlides = [
 export function CampaignHero() {
   const [activeSlide, setActiveSlide] = useState(0);
   const loadedSlides = useRef(new Set<number>());
+  const [requestedSlides, setRequestedSlides] = useState(1);
+  const [settledSlides, setSettledSlides] = useState(0);
+
+  // Load only one slide ahead, after the visible image has finished loading.
+  // Keeping picture wrappers mounted preserves the existing crossfade.
+  useEffect(() => {
+    const preference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    let timer: number | undefined;
+    const queueNext = () => {
+      window.clearTimeout(timer);
+      if (preference?.matches) return;
+      if (settledSlides < requestedSlides || requestedSlides >= heroSlides.length) return;
+      if (requestedSlides > activeSlide + 1 && loadedSlides.current.has(requestedSlides - 1)) return;
+      timer = window.setTimeout(() => setRequestedSlides((count) => count + 1), 250);
+    };
+    queueNext();
+    preference?.addEventListener?.("change", queueNext);
+    return () => {
+      window.clearTimeout(timer);
+      preference?.removeEventListener?.("change", queueNext);
+    };
+  }, [activeSlide, requestedSlides, settledSlides]);
 
   useEffect(() => {
     const motionPreference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -100,9 +122,11 @@ export function CampaignHero() {
               className={`industrial-hero-slide ${index === activeSlide ? "is-active" : ""}`}
               key={slide.image}
             >
-              <source media="(max-width: 820px)" srcSet={slide.imageSmall} />
+              {index < requestedSlides && (
               <img
                 src={slide.image}
+                srcSet={`${slide.imageSmall} 720w, ${slide.image} 1440w`}
+                sizes="(max-width: 820px) 100vw, 50vw"
                 width={slide.width}
                 height={slide.height}
                 alt={index === activeSlide ? slide.alt : ""}
@@ -110,8 +134,13 @@ export function CampaignHero() {
                 loading="eager"
                 decoding="async"
                 style={{ objectPosition: slide.position }}
-                onLoad={() => loadedSlides.current.add(index)}
+                onLoad={() => {
+                  loadedSlides.current.add(index);
+                  setSettledSlides((count) => Math.max(count, index + 1));
+                }}
+                onError={() => setSettledSlides((count) => Math.max(count, index + 1))}
               />
+              )}
             </picture>
           ))}
           <figcaption>
