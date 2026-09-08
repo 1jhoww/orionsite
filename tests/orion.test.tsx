@@ -996,11 +996,11 @@ describe("Orion institutional SPA", () => {
     expect(opening!.querySelectorAll('[class*="card"], [class*="band"]')).toHaveLength(0);
     // Wider v2 framing: more body, arms preserved, 1.5:1 instead of near-square.
     const portrait = opening!.querySelector<HTMLImageElement>(".about-story-media img");
-    expect(portrait?.getAttribute("src")).toBe("/media/company/about-dani-zico-hero-v2.webp");
+    expect(portrait?.getAttribute("src")).toBe("/media/company/about-dani-zico-hero-v3.webp");
     expect(portrait?.getAttribute("width")).toBe("1536");
     expect(portrait?.getAttribute("height")).toBe("1024");
     expect(opening!.querySelector<HTMLSourceElement>(".about-story-media source")?.getAttribute("srcset"))
-      .toBe("/media/company/about-dani-zico-hero-v2-900.webp");
+      .toBe("/media/company/about-dani-zico-hero-v3-900.webp");
     expect(opening!.querySelector(".about-story-media img")?.getAttribute("src"))
       .not.toBe("/media/company/history-daniel-zico.webp");
     // The logistics photograph remains in the approved data sequence even though

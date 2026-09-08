@@ -13,9 +13,9 @@ export function AboutStoryHero() {
       <div className="container about-story-layout">
         <figure className="about-story-media">
           <picture>
-            <source media="(max-width: 720px)" srcSet="/media/company/about-dani-zico-hero-v2-900.webp" />
+            <source media="(max-width: 720px)" srcSet="/media/company/about-dani-zico-hero-v3-900.webp" />
             <img
-              src="/media/company/about-dani-zico-hero-v2.webp"
+              src="/media/company/about-dani-zico-hero-v3.webp"
               alt="Retrato de Daniel Costa e José Aparecido Zebiani lado a lado"
               width="1536"
               height="1024"
